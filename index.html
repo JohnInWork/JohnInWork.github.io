@@ -18,7 +18,7 @@
     --hair: #d8d5ce;
 
     --rail-gap: 64px;
-    --panel-size: min(56vh, 540px);   /* панели квадратные: сторона одна на всех */
+    --panel-size: min(42vh, 396px);   /* работы-квадраты: сторона одна на всех */
 
     --ease: cubic-bezier(.2, 0, 0, 1);
     --ease-out: cubic-bezier(.05, .7, .1, 1);
@@ -101,11 +101,29 @@
     overflow: hidden;
   }
 
-  /* работы — квадраты */
+  /* игры — квадраты */
   .panel--work {
     width: var(--panel-size);
     height: var(--panel-size);
   }
+
+  /* сайт живёт в своей пропорции: кадр целиком, без обрезки */
+  .panel--site {
+    height: min(52vh, 500px);
+    aspect-ratio: 16 / 10;
+    width: auto;
+  }
+
+  .panel--site .panel__shot img { object-fit: contain; background: #0d0d0f; }
+
+  .panel--site .panel__label {
+    top: 0;
+    left: 0;
+    padding: 9px 14px;
+    background: rgba(8,8,9,.72);
+    text-shadow: none;
+  }
+  .panel--site .panel__name { font-size: clamp(38px, 6.4vh, 68px); }
 
   .panel__label {
     position: absolute;
@@ -241,8 +259,8 @@
   /* ── текстовые панели: вступление и контакты ─────────────────────────── */
 
   .panel--text {
-    width: min(46vw, 560px);
-    height: var(--panel-size);
+    width: min(40vw, 500px);
+    height: min(52vh, 470px);
     padding: 42px 38px 34px;
     display: flex;
     flex-direction: column;
@@ -551,7 +569,7 @@
     <div class="cat__head"><h2>Sites</h2><span class="cat__count mono">client work · in production</span></div>
     <div class="rail">
 
-      <article class="panel panel--work" style="--accent:#c98a5e">
+      <article class="panel panel--work panel--site" style="--accent:#c98a5e">
         <span class="panel__label mono">Astro · Vercel</span>
         <div class="panel__shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
         <h3 class="panel__name"><span>Magia</span></h3>
@@ -564,18 +582,6 @@
         </div>
       </article>
 
-      <article class="panel panel--work" style="--accent:#7fb4d8">
-        <span class="panel__label mono">In-browser tool</span>
-        <div class="panel__shot"><img src="shots/editor.jpg" alt="Map editor of the browser MMORPG"></div>
-        <h3 class="panel__name"><span>Editor</span></h3>
-        <div class="panel__meta">
-          <p>The map editor behind the MMORPG: brush over terrain across four maps, builders for mobs, NPCs, items and quests, changes apply live.</p>
-          <div class="actions">
-            <span class="btn--soon mono">Ships with the server</span>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
-          </div>
-        </div>
-      </article>
 
     </div>
   </section>
