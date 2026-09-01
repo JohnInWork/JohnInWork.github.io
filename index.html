@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Игры — Иван Кузнецов</title>
-<meta name="description" content="Шесть игр, собранных с нуля: головоломка, кликер с физикой, шутер на Three.js, онлайн-MMORPG, гексагональная стратегия и лабиринт на Godot. Четыре можно запустить прямо в браузере.">
+<title>Games by John</title>
+<meta name="description" content="Six games built from scratch: a puzzle, a physics clicker, a Three.js shooter, an online MMORPG, a hex explorer and a Godot dungeon crawler. Four of them run right in the browser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
     padding: 0 24px;
   }
 
-  /* ── шапка ── */
+  /* ── header ── */
 
   header {
     padding: 88px 0 56px;
@@ -80,7 +80,7 @@
   .meta a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid var(--line); }
   .meta a:hover { color: var(--ink); border-bottom-color: var(--ink-faint); }
 
-  /* ── сетка игр ── */
+  /* ── game grid ── */
 
   .grid {
     display: grid;
@@ -116,7 +116,7 @@
     display: block;
   }
 
-  /* вертикальные игры показываем целиком, а не обрезкой */
+  /* portrait shots are shown whole instead of being cropped */
   .shot.fit img { object-fit: contain; }
 
   .body { padding: 20px 10px 0; flex: 1; display: flex; flex-direction: column; }
@@ -205,10 +205,10 @@
 <div class="wrap">
 
   <header>
-    <h1>Игры</h1>
-    <p class="lead">Шесть игр, собранных с нуля — от головоломки до онлайн-мира с собственным редактором карт. <b>Четыре можно запустить прямо здесь</b>, в браузере, без установки.</p>
+    <h1>Games</h1>
+    <p class="lead">Six games built from scratch — from a puzzle to an online world with its own map editor. <b>Four of them run right here</b>, in the browser, nothing to install.</p>
     <div class="meta">
-      <span>Иван Кузнецов</span>
+      <span>John</span>
       <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
     </div>
   </header>
@@ -216,79 +216,79 @@
   <main class="grid">
 
     <article class="card">
-      <div class="shot"><img src="shots/flow.png" alt="Flow Connect — фигурный уровень с цветными линиями"></div>
+      <div class="shot"><img src="shots/flow.png" alt="Flow Connect — a shaped level with coloured lines"></div>
       <div class="body">
         <h2>Flow Connect</h2>
-        <p class="desc">Соединяешь точки одного цвета так, чтобы трубы не пересеклись и заполнили поле. 271 уровень: поля-маски нестандартной формы, мосты, режим на время.</p>
-        <p class="stack">Canvas · чистый JS · генератор на гамильтоновых путях</p>
+        <p class="desc">Connect matching dots so the pipes never cross and fill the whole board. 271 levels: shaped boards, bridges, and a timed mode.</p>
+        <p class="stack">Canvas · vanilla JS · levels generated from Hamiltonian paths</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/flow-connect/">Играть</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/flow-connect">Код</a>
+          <a class="btn btn-play" href="https://johninwork.github.io/flow-connect/">Play</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/flow-connect">Code</a>
         </div>
       </div>
     </article>
 
     <article class="card">
-      <div class="shot"><img src="shots/crush.png" alt="Crush Factory — дробилка перемалывает материал"></div>
+      <div class="shot"><img src="shots/crush.png" alt="Crush Factory — the crusher grinding material"></div>
       <div class="body">
         <h2>Crush Factory</h2>
-        <p class="desc">Кликер, где дробилка правда дробит: куски падают между вращающихся барабанов по физике, а не по анимации. Материалы, апгрейды, скины, 10 языков.</p>
-        <p class="stack">Canvas · Matter.js · 10 языков</p>
+        <p class="desc">A clicker where the crusher really crushes: chunks fall between spinning drums on physics, not on an animation loop. Materials, upgrades, skins, 10 languages.</p>
+        <p class="stack">Canvas · Matter.js · 10 languages</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/crush-factory/">Играть</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/crush-factory">Код</a>
+          <a class="btn btn-play" href="https://johninwork.github.io/crush-factory/">Play</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/crush-factory">Code</a>
         </div>
       </div>
     </article>
 
     <article class="card">
-      <div class="shot"><img src="shots/superhot.jpg" alt="SUPERHOT FPS — вайрфреймовый мир и пистолет"></div>
+      <div class="shot"><img src="shots/superhot.jpg" alt="SUPERHOT FPS — wireframe world and a pistol"></div>
       <div class="body">
         <h2>SUPERHOT FPS</h2>
-        <p class="desc">Шутер, где время идёт, только когда идёшь ты: стоишь — мир почти замирает. Чёрный мир, белые рёбра полигонов, кинематографическая постобработка своими шейдерами.</p>
-        <p class="stack">Three.js · WebGL · свои шейдерные проходы</p>
+        <p class="desc">A shooter where time moves only when you do — stand still and the world nearly freezes. Black world, white polygon edges, cinematic post-processing on hand-written shaders.</p>
+        <p class="stack">Three.js · WebGL · custom shader passes</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/superhot-fps/">Играть</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/superhot-fps">Код</a>
+          <a class="btn btn-play" href="https://johninwork.github.io/superhot-fps/">Play</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/superhot-fps">Code</a>
         </div>
       </div>
     </article>
 
     <article class="card">
-      <div class="shot"><img src="shots/hex.png" alt="Hex Quest — гексагональная карта под туманом"></div>
+      <div class="shot"><img src="shots/hex.png" alt="Hex Quest — a hex map under fog"></div>
       <div class="body">
         <h2>Hex Quest</h2>
-        <p class="desc">Карта закрыта туманом, каждый клик открывает клетку и сразу разыгрывает то, что под ней. Здоровье, еда и мечи убывают — идти приходится всё время в новое.</p>
-        <p class="stack">Canvas · один HTML-файл · ландшафтная генерация</p>
+        <p class="desc">The map is hidden under fog; every click reveals a tile and immediately plays out whatever sits under it. Health, food and swords drain, so you have to keep pushing into new ground.</p>
+        <p class="stack">Canvas · a single HTML file · landscape generation</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/hex-quest/">Играть</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/hex-quest">Код</a>
+          <a class="btn btn-play" href="https://johninwork.github.io/hex-quest/">Play</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/hex-quest">Code</a>
         </div>
       </div>
     </article>
 
     <article class="card">
-      <div class="shot"><img src="shots/mmorpg.jpg" alt="Браузерная MMORPG — изометрический мир"></div>
+      <div class="shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
       <div class="body">
-        <h2>Браузерная MMORPG</h2>
-        <p class="desc">Онлайн-мир: игроки видят друг друга, бьют мобов, собирают лут. Весь мир рисуется в собственной админке — кистью по карте, с конструкторами мобов, НПС и предметов.</p>
-        <p class="stack">Node.js · Socket.IO · Canvas · живой редактор карт</p>
+        <h2>Browser MMORPG</h2>
+        <p class="desc">An online world: players see each other, fight mobs, collect loot. The whole world is painted in a built-in admin panel — brush over the map, with builders for mobs, NPCs and items.</p>
+        <p class="stack">Node.js · Socket.IO · Canvas · live map editor</p>
         <div class="actions">
-          <span class="no-demo">Нужен свой сервер</span>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/browser-mmorpg">Код</a>
+          <span class="no-demo">Needs a server</span>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
         </div>
       </div>
     </article>
 
     <article class="card">
-      <div class="shot fit"><img src="shots/godot.jpg" alt="Dungeon Crawler — псевдо-3D лабиринт"></div>
+      <div class="shot fit"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
       <div class="body">
         <h2>Dungeon Crawler</h2>
-        <p class="desc">Лабиринт от первого лица для телефона: коридор рисуется рейкастингом по тайловой карте. Бой, характеристики, заклинания, торговцы с квестами.</p>
-        <p class="stack">Godot 4 · GDScript · портретный режим</p>
+        <p class="desc">A first-person maze for phones: the corridor is drawn by raycasting over a tilemap. Combat, character stats, spells, merchants with quests.</p>
+        <p class="stack">Godot 4 · GDScript · portrait mode</p>
         <div class="actions">
-          <span class="no-demo">Нужна сборка под web</span>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Код</a>
+          <span class="no-demo">Needs a web build</span>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Code</a>
         </div>
       </div>
     </article>
@@ -296,7 +296,7 @@
   </main>
 
   <footer>
-    Игры сделаны в свободное время. Исходники открыты — <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
+    Built in my spare time. Sources are open — <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
   </footer>
 
 </div>

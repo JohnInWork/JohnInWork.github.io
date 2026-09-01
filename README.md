@@ -1,16 +1,16 @@
-# Витрина игр
+# Games showcase
 
-Страница-витрина: [johninwork.github.io](https://johninwork.github.io)
+Live page: [johninwork.github.io](https://johninwork.github.io)
 
-Шесть игр с кратким описанием и кадром из каждой. Четыре запускаются прямо в браузере через GitHub Pages, у двух пока только исходники.
+Six games with a short description and a screenshot each. Four of them run right in the browser via GitHub Pages; the other two ship as source only.
 
-| Игра | Демо | Код |
+| Game | Demo | Code |
 |---|---|---|
-| Flow Connect | [играть](https://johninwork.github.io/flow-connect/) | [flow-connect](https://github.com/JohnInWork/flow-connect) |
-| Crush Factory | [играть](https://johninwork.github.io/crush-factory/) | [crush-factory](https://github.com/JohnInWork/crush-factory) |
-| SUPERHOT FPS | [играть](https://johninwork.github.io/superhot-fps/) | [superhot-fps](https://github.com/JohnInWork/superhot-fps) |
-| Hex Quest | [играть](https://johninwork.github.io/hex-quest/) | [hex-quest](https://github.com/JohnInWork/hex-quest) |
-| Браузерная MMORPG | нужен свой сервер | [browser-mmorpg](https://github.com/JohnInWork/browser-mmorpg) |
-| Dungeon Crawler | нужна сборка под web | [godot-dungeon-crawler](https://github.com/JohnInWork/godot-dungeon-crawler) |
+| Flow Connect | [play](https://johninwork.github.io/flow-connect/) | [flow-connect](https://github.com/JohnInWork/flow-connect) |
+| Crush Factory | [play](https://johninwork.github.io/crush-factory/) | [crush-factory](https://github.com/JohnInWork/crush-factory) |
+| SUPERHOT FPS | [play](https://johninwork.github.io/superhot-fps/) | [superhot-fps](https://github.com/JohnInWork/superhot-fps) |
+| Hex Quest | [play](https://johninwork.github.io/hex-quest/) | [hex-quest](https://github.com/JohnInWork/hex-quest) |
+| Browser MMORPG | needs a server | [browser-mmorpg](https://github.com/JohnInWork/browser-mmorpg) |
+| Dungeon Crawler | needs a web build | [godot-dungeon-crawler](https://github.com/JohnInWork/godot-dungeon-crawler) |
 
-Одна статическая страница: HTML и CSS, без сборки и зависимостей.
+A single static page: HTML and CSS, no build step and no dependencies.
