@@ -3,24 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Work by John</title>
-<meta name="description" content="Selected work by John, design engineer: a landscape architecture studio site in production, and six games built from scratch — four of them playable right in the browser.">
+<title>John — design engineer</title>
+<meta name="description" content="Selected work by John, design engineer: seven games built from scratch — five playable right in the browser — and a client site running in production.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0b0d12;
-    --bg-card: #12151d;
-    --bg-card-hover: #171b25;
-    --ink: #e8eaf0;
-    --ink-dim: #9aa1b1;
-    --ink-faint: #646b7d;
-    --accent: #6ee7a8;
-    --accent-ink: #0b0d12;
-    --line: #1e232f;
-    --radius-card: 20px;
-    --radius-inner: 12px;
+    --paper: #e6e4df;          /* тёплый бумажный фон — вся лента лежит на нём */
+    --panel: #fbfbfa;
+    --ink: #0f0f10;
+    --ink-dim: #6b6862;
+    --ink-faint: #a09c94;
+    --hair: #d8d5ce;
+
+    --rail-gap: 22px;
+    --panel-h: 74vh;
+
+    --ease: cubic-bezier(.2, 0, 0, 1);
+    --ease-out: cubic-bezier(.05, .7, .1, 1);
   }
 
   * { box-sizing: border-box; }
@@ -29,356 +30,630 @@
 
   body {
     margin: 0;
-    background: var(--bg);
+    background: var(--paper);
     color: var(--ink);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Archivo', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
-  .wrap {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+  a { color: inherit; }
 
-  /* ── header ── */
-
-  header {
-    padding: 88px 0 56px;
-  }
-
-  h1 {
-    margin: 0 0 18px;
-    font-size: clamp(38px, 6vw, 64px);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    font-weight: 700;
-  }
-
-  .lead {
-    margin: 0;
-    max-width: 620px;
-    font-size: clamp(17px, 2.2vw, 20px);
-    line-height: 1.5;
-    color: var(--ink-dim);
-    font-weight: 400;
-  }
-
-  .lead b { color: var(--ink); font-weight: 600; }
-
-  .meta {
-    margin-top: 28px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 28px;
-    font-size: 15px;
-    color: var(--ink-faint);
-  }
-
-  .meta a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid var(--line); }
-  .meta a:hover { color: var(--ink); border-bottom-color: var(--ink-faint); }
-
-  /* ── game grid ── */
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-    padding-bottom: 40px;
-  }
-
-  /* сетка игр — плотная, превью квадратные */
-  .grid.games {
-    grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
-    gap: 18px;
-  }
-
-  .grid.games .shot { aspect-ratio: 1; }
-  .grid.games .card { padding: 10px 10px 16px; }
-  .grid.games .body { padding: 14px 8px 0; }
-  .grid.games h3 { font-size: 17px; margin-bottom: 6px; }
-  .grid.games .desc { font-size: 13.5px; line-height: 1.45; margin-bottom: 12px; }
-  .grid.games .stack { font-size: 12px; margin-bottom: 14px; }
-  .grid.games .btn { height: 36px; padding: 0 14px; font-size: 14px; border-radius: 9px; }
-  .grid.games .no-demo { height: 36px; font-size: 12.5px; }
-
-  /* клиентская работа — одна широкая карточка: кадр слева, текст справа */
-  .grid.feature { grid-template-columns: 1fr; }
-
-  @media (min-width: 860px) {
-    .grid.feature .card { flex-direction: row; align-items: stretch; }
-    .grid.feature .shot { flex: 1 1 56%; aspect-ratio: auto; }
-    .grid.feature .body { flex: 1 1 44%; padding: 26px 22px 6px; justify-content: center; }
-    .grid.feature .desc { font-size: 16px; }
-    .grid.feature .actions { flex-direction: column; align-items: stretch; gap: 12px; }
-    .grid.feature .btn-play { flex: 0 0 auto; }
-    .grid.feature .private { flex: 0 0 auto; }
-  }
-
-  .card {
-    display: flex;
-    flex-direction: column;
-    background: var(--bg-card);
-    border-radius: var(--radius-card);
-    padding: 12px 12px 22px;
-    transition: background .18s ease, transform .18s ease;
-  }
-
-  .card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
-
-  .shot {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    border-radius: var(--radius-inner);
-    overflow: hidden;
-    background: #05060a;
-  }
-
-  .shot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-
-  /* portrait shots are shown whole instead of being cropped */
-  .shot.fit img { object-fit: contain; }
-
-  .body { padding: 20px 10px 0; flex: 1; display: flex; flex-direction: column; }
-
-  h2 {
-    margin: 0 0 8px;
-    font-size: 21px;
-    letter-spacing: -0.015em;
-    font-weight: 600;
-  }
-
-  .desc {
-    margin: 0 0 16px;
-    color: var(--ink-dim);
-    font-size: 15px;
-    line-height: 1.5;
-    flex: 1;
-  }
-
-  .stack {
-    margin: 0 0 20px;
-    font-size: 13px;
-    color: var(--ink-faint);
-    letter-spacing: 0.01em;
-  }
-
-  .actions { display: flex; align-items: center; gap: 10px; }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 42px;
-    padding: 0 20px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: opacity .15s ease, background .15s ease;
-  }
-
-  .btn-play {
-    background: var(--accent);
-    color: var(--accent-ink);
-    flex: 1;
-  }
-
-  .btn-play:hover { opacity: .88; }
-
-  .btn-code {
-    background: #1c212c;
-    color: var(--ink);
-  }
-
-  .btn-code:hover { background: #242a38; }
-
-  .btn-code.solo { flex: 1; }
-
-  .no-demo {
-    flex: 1;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: var(--ink-faint);
-  }
-
-  .section {
-    margin: 40px 0 20px;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+  .mono {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--ink-faint);
   }
 
-  .section:first-of-type { margin-top: 8px; }
+  /* ── лента ───────────────────────────────────────────────────────────── */
 
-  .private {
-    flex: 1;
-    font-size: 13px;
-    line-height: 1.35;
-    color: var(--ink-faint);
+  .stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
   }
 
-  footer {
-    padding: 40px 0 72px;
-    color: var(--ink-faint);
-    font-size: 14px;
+  .rail {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rail-gap);
+    padding: 0 6vw;
+    transform: translate3d(0, -50%, 0);
+    will-change: transform;
   }
 
-  footer a { color: var(--ink-dim); text-decoration: none; }
-  footer a:hover { color: var(--ink); }
+  /* высота страницы = длина ленты; сам скролл невидим */
+  .ghost { height: 100vh; }
 
-  @media (max-width: 640px) {
-    header { padding: 56px 0 36px; }
-    .wrap { padding: 0 18px; }
-    .grid { gap: 18px; }
+  /* ── панель ──────────────────────────────────────────────────────────── */
+
+  .panel {
+    position: relative;
+    flex: 0 0 auto;
+    height: var(--panel-h);
+    background: var(--panel);
+    overflow: hidden;
+  }
+
+  .panel__label {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    white-space: nowrap;
+    z-index: 3;
+  }
+
+  /* гигантское имя — характер страницы; края панели режут его намеренно */
+  .panel__name {
+    position: absolute;
+    left: -3%;
+    bottom: 12px;
+    z-index: 2;
+    margin: 0;
+    font-size: clamp(64px, 15vh, 150px);
+    font-weight: 700;
+    letter-spacing: -.05em;
+    line-height: .78;
+    white-space: nowrap;
+    color: #fff;
+    text-shadow: 0 2px 24px rgba(0,0,0,.55);
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .panel__label {
+    z-index: 3;
+    color: rgba(255,255,255,.78);
+    text-shadow: 0 1px 10px rgba(0,0,0,.6);
+  }
+
+  /* цветное пятно игры — вылезает за панель и наезжает на соседнюю */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--accent, #00e5ff);
+    mix-blend-mode: screen;
+    opacity: .7;
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  /* ── интро ───────────────────────────────────────────────────────────── */
+
+  .panel--intro { width: min(56vw, 720px); padding: 64px 46px 40px; }
+  .panel--intro .panel__label,
+  .panel--contact .panel__label { color: var(--ink-faint); }
+
+  .intro__title {
+    margin: 0 0 22px;
+    font-size: clamp(30px, 4.4vh, 48px);
+    font-weight: 600;
+    letter-spacing: -.035em;
+    line-height: 1.06;
+    max-width: 15ch;
+  }
+
+  .intro__title em { font-style: normal; color: var(--ink-dim); }
+
+  .intro__text {
+    margin: 0 0 18px;
+    max-width: 44ch;
+    font-size: clamp(14px, 1.9vh, 17px);
+    color: var(--ink-dim);
+  }
+
+  .intro__foot {
+    position: absolute;
+    left: 46px;
+    right: 46px;
+    bottom: 36px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .intro__foot a { text-decoration: none; border-bottom: 1px solid var(--hair); }
+  .intro__foot a:hover { border-bottom-color: var(--ink); color: var(--ink); }
+
+  /* ── игровая панель ──────────────────────────────────────────────────── */
+
+  .panel--game { width: min(38vw, 460px); }
+
+  .panel__shot {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  /* тихая подложка под имя: кадры бывают и светлыми, и тёмными */
+  .panel__shot::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 46%;
+    background: linear-gradient(to top, rgba(8,8,9,.72), rgba(8,8,9,0));
+    pointer-events: none;
+  }
+
+  .panel__shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    will-change: transform;
+  }
+
+  .panel__meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    padding: 96px 22px 22px;
+    background: linear-gradient(to top, rgba(8,8,9,.92) 32%, rgba(8,8,9,0));
+    color: #fff;
+    transform: translateY(14px);
+    opacity: 0;
+    transition: transform .34s var(--ease-out), opacity .28s var(--ease-out);
+  }
+
+  .panel--game:hover .panel__meta,
+  .panel--game:focus-within .panel__meta { transform: translateY(0); opacity: 1; }
+
+  .panel__meta p { margin: 0 0 16px; font-size: 14px; line-height: 1.45; color: #cfcdc8; }
+
+  .actions { display: flex; gap: 8px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 15px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: transform .16s var(--ease), background .16s var(--ease);
+  }
+
+  .btn:active { transform: scale(.97); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent, #fff);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .panel--intro :focus-visible,
+  .panel--contact :focus-visible { outline-color: var(--ink); }
+
+  .btn--play { background: var(--accent, #fff); color: #08080a; }
+  .btn--code { background: rgba(255,255,255,.14); color: #fff; }
+  .btn--code:hover { background: rgba(255,255,255,.24); }
+
+  .btn--soon {
+    display: inline-flex;
+    align-items: center;
+    height: 34px;
+    font-size: 12.5px;
+    color: #8f8c86;
+  }
+
+  /* ── широкая панель клиентской работы ────────────────────────────────── */
+
+  .panel--client { width: min(64vw, 860px); }
+  .panel--client .panel__meta { opacity: 1; transform: none; padding: 90px 34px 30px; }
+  .panel--client .panel__meta h4 {
+    margin: 0 0 10px;
+    font-size: clamp(22px, 3.4vh, 34px);
+    font-weight: 600;
+    letter-spacing: -.03em;
+  }
+  .panel--client .panel__meta p { max-width: 52ch; font-size: 15px; }
+
+  /* ── разделитель-глава ───────────────────────────────────────────────── */
+
+  .chapter {
+    flex: 0 0 auto;
+    height: var(--panel-h);
+    width: 21vw;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 6px;
+  }
+
+  .chapter h2 {
+    margin: 0;
+    font-size: clamp(64px, 15vh, 150px);
+    font-weight: 700;
+    letter-spacing: -.05em;
+    line-height: .8;
+    color: var(--ink);
+  }
+
+  .chapter span { display: block; margin-bottom: 14px; }
+
+  /* ── контакты ────────────────────────────────────────────────────────── */
+
+  .panel--contact { width: min(40vw, 520px); padding: 64px 46px 46px; }
+
+  .contact-list { margin: 26px 0 0; padding: 0; list-style: none; }
+
+  .contact-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 15px 0;
+    border-top: 1px solid var(--hair);
+    font-size: clamp(17px, 2.4vh, 22px);
+    font-weight: 500;
+    letter-spacing: -.02em;
+  }
+
+  .contact-list a { text-decoration: none; }
+  .contact-list a:hover { color: var(--ink-dim); }
+
+  /* ── интерфейс поверх ────────────────────────────────────────────────── */
+
+  .hud {
+    position: fixed;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 5;
+  }
+
+  .hud i {
+    display: block;
+    width: 2px;
+    height: 11px;
+    background: var(--ink-faint);
+    opacity: .5;
+    transition: opacity .2s linear;
+  }
+
+  .hud i.on { opacity: 1; background: var(--ink); }
+
+  /* прицел в центре — отсылка к играм, а не декоративный плюс */
+  .aim {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 13px;
+    height: 13px;
+    margin: -6.5px 0 0 -6.5px;
+    z-index: 5;
+    pointer-events: none;
+    opacity: .34;
+  }
+
+  .aim::before, .aim::after {
+    content: "";
+    position: absolute;
+    background: var(--ink);
+  }
+
+  .aim::before { left: 50%; top: 0; width: 1px; height: 100%; }
+  .aim::after { top: 50%; left: 0; height: 1px; width: 100%; }
+
+  .hint {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 5;
+    transition: opacity .4s var(--ease);
+  }
+
+  .hint.gone { opacity: 0; }
+
+  /* ── появление панелей ───────────────────────────────────────────────── */
+
+  .panel, .chapter { opacity: 0; transform: translateY(18px); }
+
+  .panel.in, .chapter.in {
+    opacity: 1;
+    transform: none;
+    transition: opacity .5s var(--ease-out), transform .5s var(--ease-out);
+  }
+
+  /* ── телефон: обычная вертикальная страница ──────────────────────────── */
+
+  @media (max-width: 860px) {
+    .stage { position: static; overflow: visible; }
+    .ghost { display: none; }
+    .rail {
+      position: static;
+      flex-direction: column;
+      align-items: stretch;
+      transform: none !important;
+      padding: 74px 18px 60px;
+      gap: 46px;
+    }
+    .panel, .chapter { width: auto !important; height: auto; }
+    .panel--game, .panel--client { min-height: 62vh; }
+    .panel--intro, .panel--contact { padding: 28px; }
+    .panel__meta { opacity: 1; transform: none; }
+    /* на телефоне описание всегда видно, поэтому имя уходит наверх панели */
+    .panel__name {
+      top: 44px;
+      bottom: auto;
+      left: 14px;
+      font-size: clamp(46px, 13vw, 92px);
+    }
+    .panel__shot::after { height: 62%; }
+    .chapter { padding: 8px 0 0; }
+    .chapter h2 { font-size: clamp(52px, 16vw, 110px); }
+    .aim, .hud, .hint { display: none; }
+    .intro__foot { position: static; margin-top: 26px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rail { transition: none; }
+    .panel, .chapter { opacity: 1; transform: none; }
+    .panel__meta { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<div class="hud" id="hud" aria-hidden="true"></div>
+<div class="aim" aria-hidden="true"></div>
+<div class="hint mono" id="hint">scroll →</div>
 
-  <header>
-    <h1>Selected work</h1>
-    <p class="lead">I design things and build them until they run. Below: a client site live in production, and seven games made from scratch — <b>five of them playable right here</b>, nothing to install.</p>
-    <div class="meta">
-      <span>John · design engineer</span>
-      <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
+<div class="stage">
+  <div class="rail" id="rail">
+
+    <section class="panel panel--intro">
+      <span class="panel__label mono">John · design engineer</span>
+      <h1 class="intro__title">I design things and <em>build them until they run.</em></h1>
+      <p class="intro__text">Seven games made from scratch — five of them start right here, in this browser, with nothing to install. Plus a client site running in production.</p>
+      <p class="intro__text">I pick the stack, design the thing and carry it to production. AI writes most of the code; I read it, test it and own what ships.</p>
+      <div class="intro__foot mono">
+        <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
+        <span>2026</span>
+      </div>
+    </section>
+
+    <div class="chapter">
+      <div>
+        <span class="mono">Section 01</span>
+        <h2>Play</h2>
+      </div>
     </div>
-  </header>
 
-  <h2 class="section">Client work</h2>
-
-  <section class="grid feature">
-    <article class="card">
-      <div class="shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
-      <div class="body">
-        <h3>Magia Prostranstva</h3>
-        <p class="desc">Site for a landscape architecture studio, live in production. Full-screen hero where the photo splits into vertical blades that flip and swap frames, case studies as content collections, leads going straight to Telegram.</p>
-        <p class="stack">Astro · content collections · i18n · Vercel</p>
+    <section class="panel panel--game" style="--accent:#00e5ff">
+      <span class="panel__label mono">Godot · WebAssembly</span>
+      <div class="panel__shot"><img src="shots/voidle.jpg" alt="Voidle — vertical space shooter"></div>
+      <h3 class="panel__name">Voidle</h3>
+      <div class="panel__meta">
+        <p>The ship fires on its own; you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://magiaprostranstva.com">Open site</a>
-          <span class="private">Client project — source stays private</span>
+          <a class="btn btn--play" href="https://johninwork.github.io/voidle/">Play</a>
+          <a class="btn btn--code" href="https://github.com/JohnInWork/voidle">Code</a>
         </div>
       </div>
-    </article>
-  </section>
+    </section>
 
-  <h2 class="section">Games</h2>
-
-  <main class="grid games">
-
-    <article class="card">
-      <div class="shot"><img src="shots/flow.jpg" alt="Flow Connect — a shaped level with coloured lines"></div>
-      <div class="body">
-        <h3>Flow Connect</h3>
-        <p class="desc">Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
-        <p class="stack">Canvas · vanilla JS · levels generated from Hamiltonian paths</p>
+    <section class="panel panel--game" style="--accent:#ff7a1a">
+      <span class="panel__label mono">Canvas · Matter.js</span>
+      <div class="panel__shot"><img src="shots/crush.jpg" alt="Crush Factory — the crusher grinding material"></div>
+      <h3 class="panel__name">Crush</h3>
+      <div class="panel__meta">
+        <p>A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/flow-connect/">Play</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/flow-connect">Code</a>
+          <a class="btn btn--play" href="https://johninwork.github.io/crush-factory/">Play</a>
+          <a class="btn btn--code" href="https://github.com/JohnInWork/crush-factory">Code</a>
         </div>
       </div>
-    </article>
+      <div class="blob" style="--accent:#ff7a1a; width:34vh; height:34vh; right:-16vh; top:-10vh"></div>
+    </section>
 
-    <article class="card">
-      <div class="shot"><img src="shots/crush.jpg" alt="Crush Factory — the crusher grinding material"></div>
-      <div class="body">
-        <h3>Crush Factory</h3>
-        <p class="desc">A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
-        <p class="stack">Canvas · Matter.js · 10 languages</p>
+    <section class="panel panel--game" style="--accent:#ff3b3b">
+      <span class="panel__label mono">Three.js · WebGL</span>
+      <div class="panel__shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
+      <h3 class="panel__name">Slowmo</h3>
+      <div class="panel__meta">
+        <p>Time moves only when you do. Black world, white polygon edges, post-processing written by hand.</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/crush-factory/">Play</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/crush-factory">Code</a>
+          <a class="btn btn--play" href="https://johninwork.github.io/slowmo-fps/">Play</a>
+          <a class="btn btn--code" href="https://github.com/JohnInWork/slowmo-fps">Code</a>
         </div>
       </div>
-    </article>
+    </section>
 
-    <article class="card">
-      <div class="shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
-      <div class="body">
-        <h3>SlowmoFPS</h3>
-        <p class="desc">Time moves only when you do. Black world, white polygon edges, hand-written post-processing.</p>
-        <p class="stack">Three.js · WebGL · custom shader passes</p>
+    <section class="panel panel--game" style="--accent:#c9dd00">
+      <span class="panel__label mono">Canvas · one HTML file</span>
+      <div class="panel__shot"><img src="shots/hex.jpg" alt="Hex Quest — a hex map under fog"></div>
+      <h3 class="panel__name">Hex</h3>
+      <div class="panel__meta">
+        <p>A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/slowmo-fps/">Play</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/slowmo-fps">Code</a>
+          <a class="btn btn--play" href="https://johninwork.github.io/hex-quest/">Play</a>
+          <a class="btn btn--code" href="https://github.com/JohnInWork/hex-quest">Code</a>
         </div>
       </div>
-    </article>
+      <div class="blob" style="--accent:#c9dd00; width:26vh; height:26vh; left:-12vh; bottom:-9vh"></div>
+    </section>
 
-    <article class="card">
-      <div class="shot"><img src="shots/hex.jpg" alt="Hex Quest — a hex map under fog"></div>
-      <div class="body">
-        <h3>Hex Quest</h3>
-        <p class="desc">A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
-        <p class="stack">Canvas · a single HTML file · landscape generation</p>
+    <section class="panel panel--game" style="--accent:#3bd16f">
+      <span class="panel__label mono">Canvas · vanilla JS</span>
+      <div class="panel__shot"><img src="shots/flow.jpg" alt="Flow Connect — a shaped level with coloured lines"></div>
+      <h3 class="panel__name">Flow</h3>
+      <div class="panel__meta">
+        <p>Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/hex-quest/">Play</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/hex-quest">Code</a>
+          <a class="btn btn--play" href="https://johninwork.github.io/flow-connect/">Play</a>
+          <a class="btn btn--code" href="https://github.com/JohnInWork/flow-connect">Code</a>
         </div>
       </div>
-    </article>
+    </section>
 
-    <article class="card">
-      <div class="shot"><img src="shots/voidle.jpg" alt="Voidle — vertical space shooter"></div>
-      <div class="body">
-        <h3>Voidle</h3>
-        <p class="desc">The ship fires on its own, you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
-        <p class="stack">Godot 4 · GDScript · WebAssembly build</p>
+    <div class="chapter">
+      <div>
+        <span class="mono">Section 02</span>
+        <h2>Build</h2>
+      </div>
+    </div>
+
+    <section class="panel panel--game" style="--accent:#59b0ea">
+      <span class="panel__label mono">Node.js · Socket.IO</span>
+      <div class="panel__shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
+      <h3 class="panel__name">MMO</h3>
+      <div class="panel__meta">
+        <p>An online world with a map editor built in: paint the terrain, assemble mobs and NPCs, changes go live without a restart.</p>
         <div class="actions">
-          <a class="btn btn-play" href="https://johninwork.github.io/voidle/">Play</a>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/voidle">Code</a>
+          <span class="btn--soon mono">Needs a server</span>
+          <a class="btn btn--code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
         </div>
       </div>
-    </article>
+      <div class="blob" style="--accent:#59b0ea; width:30vh; height:30vh; right:-14vh; bottom:-12vh"></div>
+    </section>
 
-    <article class="card">
-      <div class="shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
-      <div class="body">
-        <h3>Browser MMORPG</h3>
-        <p class="desc">An online world: players see each other, fight mobs, collect loot. The whole map is painted in a built-in admin panel.</p>
-        <p class="stack">Node.js · Socket.IO · Canvas · live map editor</p>
+    <section class="panel panel--game" style="--accent:#c9803f">
+      <span class="panel__label mono">Godot 4 · GDScript</span>
+      <div class="panel__shot"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
+      <h3 class="panel__name">Dungeon</h3>
+      <div class="panel__meta">
+        <p>A first-person maze drawn by raycasting, wrapped in a pixel-art handheld. Combat, stats, spells, merchants.</p>
         <div class="actions">
-          <span class="no-demo">Needs a server</span>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
+          <span class="btn--soon mono">Screenshots only</span>
+          <a class="btn btn--code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Code</a>
         </div>
       </div>
-    </article>
+    </section>
 
-    <article class="card">
-      <div class="shot fit"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
-      <div class="body">
-        <h3>Dungeon Crawler</h3>
-        <p class="desc">A first-person maze drawn by raycasting. Combat, stats, spells, merchants with quests.</p>
-        <p class="stack">Godot 4 · GDScript · portrait mode</p>
+    <section class="panel panel--client" style="--accent:#9a5b34">
+      <span class="panel__label mono">Client work · Astro · in production</span>
+      <div class="panel__shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
+      <div class="panel__meta">
+        <h4>Magia Prostranstva</h4>
+        <p>Site for a landscape architecture studio, live in production. The hero photo splits into vertical blades that flip and swap frames; case studies are content collections, leads go straight to Telegram.</p>
         <div class="actions">
-          <span class="no-demo">Screenshots only</span>
-          <a class="btn btn-code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Code</a>
+          <a class="btn btn--play" href="https://magiaprostranstva.com">Open site</a>
+          <span class="btn--soon mono">Source stays private</span>
         </div>
       </div>
-    </article>
+    </section>
 
-  </main>
+    <section class="panel panel--contact">
+      <span class="panel__label mono">End of the line</span>
+      <h2 style="margin:0;font-size:clamp(28px,4vh,42px);font-weight:600;letter-spacing:-.03em">Want one of these built?</h2>
+      <ul class="contact-list">
+        <li><a href="https://github.com/JohnInWork">GitHub</a> <span class="mono">JohnInWork</span></li>
+        <li><a href="https://johninwork.github.io/voidle/">Voidle</a> <span class="mono">play</span></li>
+        <li><a href="https://magiaprostranstva.com">Magia Prostranstva</a> <span class="mono">live</span></li>
+      </ul>
+      <p class="intro__text" style="margin-top:26px">Seven games, one client site. All of it designed and shipped end to end.</p>
+    </section>
 
-  <footer>
-    I pick the stack, design the thing and drive it to production — AI writes most of the code, I read it, test it and own what ships.<br>
-    Sources are open — <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
-  </footer>
-
+  </div>
 </div>
+
+<div class="ghost" id="ghost"></div>
+
+<script>
+(() => {
+  const rail  = document.getElementById('rail');
+  const ghost = document.getElementById('ghost');
+  const hud   = document.getElementById('hud');
+  const hint  = document.getElementById('hint');
+  const cards = [...rail.children];
+
+  const calm = matchMedia('(prefers-reduced-motion: reduce)');
+  const wide = matchMedia('(min-width: 861px)');
+
+  // индикатор — по штриху на панель
+  cards.forEach(() => hud.appendChild(document.createElement('i')));
+  const ticks = [...hud.children];
+
+  let railW = 0, maxShift = 0, target = 0, current = 0, raf = 0;
+
+  function measure() {
+    if (!wide.matches) { ghost.style.height = ''; rail.style.transform = ''; return; }
+    railW = rail.scrollWidth;
+    maxShift = Math.max(0, railW - innerWidth);
+    // длина прокрутки = сколько ленте нужно проехать, плюс экран на вход
+    ghost.style.height = (maxShift + innerHeight) + 'px';
+    onScroll(true);
+  }
+
+  function onScroll(instant) {
+    if (!wide.matches) return;
+    target = Math.min(scrollY, maxShift);
+    if (instant || calm.matches) { current = target; paint(); return; }
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+
+  // инерция: лента догоняет скролл, а не прыгает за ним
+  function tick() {
+    const delta = target - current;
+    current += delta * 0.11;
+    if (Math.abs(delta) < 0.3) { current = target; raf = 0; } else { raf = requestAnimationFrame(tick); }
+    paint();
+  }
+
+  function paint() {
+    rail.style.transform = `translate3d(${-current}px, -50%, 0)`;
+
+    // расслойка: кадр отстаёт от панели, имя обгоняет, пятно уходит вглубь
+    const shift = current;
+    cards.forEach(card => {
+      const img  = card.querySelector('.panel__shot img');
+      const name = card.querySelector('.panel__name');
+      const blob = card.querySelector('.blob');
+      if (img)  img.style.transform  = `translate3d(${shift * 0.045}px,0,0) scale(1.06)`;
+      if (name) name.style.transform = `translate3d(${shift * -0.03}px,0,0)`;
+      if (blob) blob.style.transform = `translate3d(${shift * 0.09}px,0,0)`;
+    });
+
+    const p = maxShift ? current / maxShift : 0;
+    const active = Math.round(p * (ticks.length - 1));
+    ticks.forEach((t, i) => t.classList.toggle('on', i === active));
+    hint.classList.toggle('gone', current > 40);
+  }
+
+  // появление панелей — короткий каскад, без «всё летит снизу»
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (!e.isIntersecting) return;
+      setTimeout(() => e.target.classList.add('in'), i * 60);
+      io.unobserve(e.target);
+    });
+  }, { root: null, rootMargin: '0px -8% 0px -8%', threshold: 0.05 });
+
+  cards.forEach(c => io.observe(c));
+
+  // клавиатура: панель, на которую ушёл фокус, должна оказаться в кадре
+  rail.addEventListener('focusin', e => {
+    if (!wide.matches) return;
+    const card = e.target.closest('.panel');
+    if (!card) return;
+    const want = Math.max(0, Math.min(card.offsetLeft - innerWidth * 0.18, maxShift));
+    scrollTo({ top: want, behavior: calm.matches ? 'auto' : 'smooth' });
+  });
+
+  addEventListener('scroll', () => onScroll(false), { passive: true });
+  addEventListener('resize', measure);
+  addEventListener('load', measure);
+  measure();
+
+  // на узком экране лента становится обычной колонкой — сбрасываем сдвиг
+  wide.addEventListener('change', () => { rail.style.transform = ''; measure(); });
+})();
+</script>
 
 </body>
 </html>
