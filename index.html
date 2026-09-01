@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Games by John</title>
-<meta name="description" content="Six games built from scratch: a puzzle, a physics clicker, a Three.js shooter, an online MMORPG, a hex explorer and a Godot dungeon crawler. Four of them run right in the browser.">
+<title>Work by John</title>
+<meta name="description" content="Selected work by John, design engineer: a landscape architecture studio site in production, and six games built from scratch — four of them playable right in the browser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -87,6 +87,19 @@
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 24px;
     padding-bottom: 40px;
+  }
+
+  /* клиентская работа — одна широкая карточка: кадр слева, текст справа */
+  .grid.feature { grid-template-columns: 1fr; }
+
+  @media (min-width: 860px) {
+    .grid.feature .card { flex-direction: row; align-items: stretch; }
+    .grid.feature .shot { flex: 1 1 56%; aspect-ratio: auto; }
+    .grid.feature .body { flex: 1 1 44%; padding: 26px 22px 6px; justify-content: center; }
+    .grid.feature .desc { font-size: 16px; }
+    .grid.feature .actions { flex-direction: column; align-items: stretch; gap: 12px; }
+    .grid.feature .btn-play { flex: 0 0 auto; }
+    .grid.feature .private { flex: 0 0 auto; }
   }
 
   .card {
@@ -184,6 +197,24 @@
     color: var(--ink-faint);
   }
 
+  .section {
+    margin: 40px 0 20px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .section:first-of-type { margin-top: 8px; }
+
+  .private {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--ink-faint);
+  }
+
   footer {
     padding: 40px 0 72px;
     color: var(--ink-faint);
@@ -205,20 +236,39 @@
 <div class="wrap">
 
   <header>
-    <h1>Games</h1>
-    <p class="lead">Six games built from scratch — from a puzzle to an online world with its own map editor. <b>Four of them run right here</b>, in the browser, nothing to install.</p>
+    <h1>Selected work</h1>
+    <p class="lead">I design things and build them until they run. Below: a client site live in production, and six games made from scratch — <b>four of them playable right here</b>, nothing to install.</p>
     <div class="meta">
       <span>John · design engineer</span>
       <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
     </div>
   </header>
 
+  <h2 class="section">Client work</h2>
+
+  <section class="grid feature">
+    <article class="card">
+      <div class="shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
+      <div class="body">
+        <h3>Magia Prostranstva</h3>
+        <p class="desc">Site for a landscape architecture studio, live in production. Full-screen hero where the photo splits into vertical blades that flip and swap frames, case studies as content collections, leads going straight to Telegram.</p>
+        <p class="stack">Astro · content collections · i18n · Vercel</p>
+        <div class="actions">
+          <a class="btn btn-play" href="https://magiaprostranstva.com">Open site</a>
+          <span class="private">Client project — source stays private</span>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <h2 class="section">Games</h2>
+
   <main class="grid">
 
     <article class="card">
       <div class="shot"><img src="shots/flow.png" alt="Flow Connect — a shaped level with coloured lines"></div>
       <div class="body">
-        <h2>Flow Connect</h2>
+        <h3>Flow Connect</h3>
         <p class="desc">Connect matching dots so the pipes never cross and fill the whole board. 271 levels: shaped boards, bridges, and a timed mode.</p>
         <p class="stack">Canvas · vanilla JS · levels generated from Hamiltonian paths</p>
         <div class="actions">
@@ -231,7 +281,7 @@
     <article class="card">
       <div class="shot"><img src="shots/crush.png" alt="Crush Factory — the crusher grinding material"></div>
       <div class="body">
-        <h2>Crush Factory</h2>
+        <h3>Crush Factory</h3>
         <p class="desc">A clicker where the crusher really crushes: chunks fall between spinning drums on physics, not on an animation loop. Materials, upgrades, skins, 10 languages.</p>
         <p class="stack">Canvas · Matter.js · 10 languages</p>
         <div class="actions">
@@ -244,7 +294,7 @@
     <article class="card">
       <div class="shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
       <div class="body">
-        <h2>SlowmoFPS</h2>
+        <h3>SlowmoFPS</h3>
         <p class="desc">A shooter where time moves only when you do — stand still and the world nearly freezes. Black world, white polygon edges, cinematic post-processing on hand-written shaders.</p>
         <p class="stack">Three.js · WebGL · custom shader passes</p>
         <div class="actions">
@@ -257,7 +307,7 @@
     <article class="card">
       <div class="shot"><img src="shots/hex.png" alt="Hex Quest — a hex map under fog"></div>
       <div class="body">
-        <h2>Hex Quest</h2>
+        <h3>Hex Quest</h3>
         <p class="desc">The map is hidden under fog; every click reveals a tile and plays out whatever sits under it. Health, food and swords drain, so you keep pushing into new ground — with an inventory, gear, sea monsters and 15 playable characters.</p>
         <p class="stack">Canvas · a single HTML file · landscape generation</p>
         <div class="actions">
@@ -270,7 +320,7 @@
     <article class="card">
       <div class="shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
       <div class="body">
-        <h2>Browser MMORPG</h2>
+        <h3>Browser MMORPG</h3>
         <p class="desc">An online world: players see each other, fight mobs, collect loot. The whole world is painted in a built-in admin panel — brush over the map, with builders for mobs, NPCs and items.</p>
         <p class="stack">Node.js · Socket.IO · Canvas · live map editor</p>
         <div class="actions">
@@ -283,7 +333,7 @@
     <article class="card">
       <div class="shot fit"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
       <div class="body">
-        <h2>Dungeon Crawler</h2>
+        <h3>Dungeon Crawler</h3>
         <p class="desc">A first-person maze for phones: the corridor is drawn by raycasting over a tilemap. Combat, character stats, spells, merchants with quests.</p>
         <p class="stack">Godot 4 · GDScript · portrait mode</p>
         <div class="actions">
