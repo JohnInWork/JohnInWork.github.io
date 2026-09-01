@@ -17,8 +17,8 @@
     --ink-faint: #a09c94;
     --hair: #d8d5ce;
 
-    --rail-gap: 22px;
-    --panel-h: 74vh;
+    --rail-gap: 72px;
+    --panel-h: 58vh;
 
     --ease: cubic-bezier(.2, 0, 0, 1);
     --ease-out: cubic-bezier(.05, .7, .1, 1);
@@ -64,7 +64,7 @@
     display: flex;
     align-items: center;
     gap: var(--rail-gap);
-    padding: 0 6vw;
+    padding: 0 18vw;
     transform: translate3d(0, -50%, 0);
     will-change: transform;
   }
@@ -97,11 +97,12 @@
     bottom: 12px;
     z-index: 2;
     margin: 0;
-    font-size: clamp(64px, 15vh, 150px);
+    font-size: clamp(52px, 11vh, 104px);
     font-weight: 700;
     letter-spacing: -.05em;
     line-height: .78;
     white-space: nowrap;
+    overflow: hidden;
     color: #fff;
     text-shadow: 0 2px 24px rgba(0,0,0,.55);
     pointer-events: none;
@@ -122,13 +123,19 @@
     mix-blend-mode: screen;
     opacity: .7;
     z-index: 1;
+    animation: drift 22s ease-in-out infinite alternate;
     pointer-events: none;
     will-change: transform;
   }
 
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-16px, 22px, 0); }
+  }
+
   /* ── интро ───────────────────────────────────────────────────────────── */
 
-  .panel--intro { width: min(56vw, 720px); padding: 64px 46px 40px; }
+  .panel--intro { width: min(42vw, 560px); padding: 56px 40px 36px; }
   .panel--intro .panel__label,
   .panel--contact .panel__label { color: var(--ink-faint); }
 
@@ -152,9 +159,9 @@
 
   .intro__foot {
     position: absolute;
-    left: 46px;
-    right: 46px;
-    bottom: 36px;
+    left: 40px;
+    right: 40px;
+    bottom: 32px;
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -165,7 +172,7 @@
 
   /* ── игровая панель ──────────────────────────────────────────────────── */
 
-  .panel--game { width: min(38vw, 460px); }
+  .panel--game { width: min(23vw, 318px); }
 
   .panel__shot {
     position: absolute;
@@ -189,7 +196,17 @@
     object-fit: cover;
     display: block;
     will-change: transform;
+    animation: breathe 16s ease-in-out infinite alternate;   /* ambient: кадр еле заметно дышит */
+    transition: filter .5s var(--ease);
   }
+
+  @keyframes breathe {
+    from { transform: scale(1.03); }
+    to   { transform: scale(1.09); }
+  }
+
+  .panel--game:hover .panel__shot img,
+  .panel--game:focus-within .panel__shot img { filter: saturate(1.12) contrast(1.04); }
 
   .panel__meta {
     position: absolute;
@@ -249,7 +266,7 @@
 
   /* ── широкая панель клиентской работы ────────────────────────────────── */
 
-  .panel--client { width: min(64vw, 860px); }
+  .panel--client { width: min(42vw, 560px); }
   .panel--client .panel__meta { opacity: 1; transform: none; padding: 90px 34px 30px; }
   .panel--client .panel__meta h4 {
     margin: 0 0 10px;
@@ -264,15 +281,23 @@
   .chapter {
     flex: 0 0 auto;
     height: var(--panel-h);
-    width: 21vw;
+    width: 15vw;
     display: flex;
     align-items: flex-end;
     padding-bottom: 6px;
   }
 
+  .chapter h2 { overflow: hidden; }
+  .chapter h2 span {
+    display: inline-block;
+    transform: translateY(105%);
+    transition: transform .7s var(--ease-out) .1s;
+  }
+  .chapter.in h2 span { transform: translateY(0); }
+
   .chapter h2 {
     margin: 0;
-    font-size: clamp(64px, 15vh, 150px);
+    font-size: clamp(56px, 13vh, 128px);
     font-weight: 700;
     letter-spacing: -.05em;
     line-height: .8;
@@ -283,7 +308,7 @@
 
   /* ── контакты ────────────────────────────────────────────────────────── */
 
-  .panel--contact { width: min(40vw, 520px); padding: 64px 46px 46px; }
+  .panel--contact { width: min(30vw, 400px); padding: 56px 38px 38px; }
 
   .contact-list { margin: 26px 0 0; padding: 0; list-style: none; }
 
@@ -318,26 +343,36 @@
   .hud i {
     display: block;
     width: 2px;
-    height: 11px;
+    height: 10px;
     background: var(--ink-faint);
-    opacity: .5;
-    transition: opacity .2s linear;
+    opacity: .45;
+    transform-origin: 50% 50%;
+    transition: opacity .25s var(--ease), transform .35s var(--ease-out), background .25s var(--ease);
   }
 
-  .hud i.on { opacity: 1; background: var(--ink); }
+  .hud i.on {
+    opacity: 1;
+    background: var(--ink);
+    transform: scaleY(1.9);
+  }
 
   /* прицел в центре — отсылка к играм, а не декоративный плюс */
   .aim {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 13px;
-    height: 13px;
-    margin: -6.5px 0 0 -6.5px;
-    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    margin: -7.5px 0 0 -7.5px;
+    z-index: 6;
     pointer-events: none;
-    opacity: .34;
+    opacity: .38;
+    transform: translate3d(50vw, 50vh, 0);
+    will-change: transform;
+    transition: opacity .3s var(--ease);
   }
+
+  .aim.hot { opacity: .9; }
 
   .aim::before, .aim::after {
     content: "";
@@ -361,13 +396,25 @@
 
   /* ── появление панелей ───────────────────────────────────────────────── */
 
-  .panel, .chapter { opacity: 0; transform: translateY(18px); }
+  .panel, .chapter { opacity: 0; transform: translate3d(26px, 14px, 0) scale(.965); }
 
   .panel.in, .chapter.in {
     opacity: 1;
     transform: none;
-    transition: opacity .5s var(--ease-out), transform .5s var(--ease-out);
+    transition: opacity .55s var(--ease-out), transform .62s var(--ease-out);
   }
+
+  /* имя выезжает из-под нижнего края панели, а не проявляется */
+  .panel__name span {
+    display: inline-block;
+    transform: translateY(105%);
+    transition: transform .66s var(--ease-out) .12s;
+  }
+
+  .panel.in .panel__name span { transform: translateY(0); }
+
+  .panel__label { opacity: 0; transition: opacity .4s var(--ease) .3s; }
+  .panel.in .panel__label { opacity: 1; }
 
   /* ── телефон: обычная вертикальная страница ──────────────────────────── */
 
@@ -395,7 +442,15 @@
     }
     .panel__shot::after { height: 62%; }
     .chapter { padding: 8px 0 0; }
-    .chapter h2 { font-size: clamp(52px, 16vw, 110px); }
+    .chapter h2 { overflow: hidden; }
+  .chapter h2 span {
+    display: inline-block;
+    transform: translateY(105%);
+    transition: transform .7s var(--ease-out) .1s;
+  }
+  .chapter.in h2 span { transform: translateY(0); }
+
+  .chapter h2 { font-size: clamp(52px, 16vw, 110px); }
     .aim, .hud, .hint { display: none; }
     .intro__foot { position: static; margin-top: 26px; }
   }
@@ -430,14 +485,14 @@
     <div class="chapter">
       <div>
         <span class="mono">Section 01</span>
-        <h2>Play</h2>
+        <h2><span>Play</span></h2>
       </div>
     </div>
 
     <section class="panel panel--game" style="--accent:#00e5ff">
       <span class="panel__label mono">Godot · WebAssembly</span>
       <div class="panel__shot"><img src="shots/voidle.jpg" alt="Voidle — vertical space shooter"></div>
-      <h3 class="panel__name">Voidle</h3>
+      <h3 class="panel__name"><span>Voidle</span></h3>
       <div class="panel__meta">
         <p>The ship fires on its own; you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
         <div class="actions">
@@ -450,7 +505,7 @@
     <section class="panel panel--game" style="--accent:#ff7a1a">
       <span class="panel__label mono">Canvas · Matter.js</span>
       <div class="panel__shot"><img src="shots/crush.jpg" alt="Crush Factory — the crusher grinding material"></div>
-      <h3 class="panel__name">Crush</h3>
+      <h3 class="panel__name"><span>Crush</span></h3>
       <div class="panel__meta">
         <p>A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
         <div class="actions">
@@ -464,7 +519,7 @@
     <section class="panel panel--game" style="--accent:#ff3b3b">
       <span class="panel__label mono">Three.js · WebGL</span>
       <div class="panel__shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
-      <h3 class="panel__name">Slowmo</h3>
+      <h3 class="panel__name"><span>Slowmo</span></h3>
       <div class="panel__meta">
         <p>Time moves only when you do. Black world, white polygon edges, post-processing written by hand.</p>
         <div class="actions">
@@ -477,7 +532,7 @@
     <section class="panel panel--game" style="--accent:#c9dd00">
       <span class="panel__label mono">Canvas · one HTML file</span>
       <div class="panel__shot"><img src="shots/hex.jpg" alt="Hex Quest — a hex map under fog"></div>
-      <h3 class="panel__name">Hex</h3>
+      <h3 class="panel__name"><span>Hex</span></h3>
       <div class="panel__meta">
         <p>A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
         <div class="actions">
@@ -491,7 +546,7 @@
     <section class="panel panel--game" style="--accent:#3bd16f">
       <span class="panel__label mono">Canvas · vanilla JS</span>
       <div class="panel__shot"><img src="shots/flow.jpg" alt="Flow Connect — a shaped level with coloured lines"></div>
-      <h3 class="panel__name">Flow</h3>
+      <h3 class="panel__name"><span>Flow</span></h3>
       <div class="panel__meta">
         <p>Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
         <div class="actions">
@@ -504,14 +559,14 @@
     <div class="chapter">
       <div>
         <span class="mono">Section 02</span>
-        <h2>Build</h2>
+        <h2><span>Build</span></h2>
       </div>
     </div>
 
     <section class="panel panel--game" style="--accent:#59b0ea">
       <span class="panel__label mono">Node.js · Socket.IO</span>
       <div class="panel__shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
-      <h3 class="panel__name">MMO</h3>
+      <h3 class="panel__name"><span>MMO</span></h3>
       <div class="panel__meta">
         <p>An online world with a map editor built in: paint the terrain, assemble mobs and NPCs, changes go live without a restart.</p>
         <div class="actions">
@@ -525,7 +580,7 @@
     <section class="panel panel--game" style="--accent:#c9803f">
       <span class="panel__label mono">Godot 4 · GDScript</span>
       <div class="panel__shot"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
-      <h3 class="panel__name">Dungeon</h3>
+      <h3 class="panel__name"><span>Dungeon</span></h3>
       <div class="panel__meta">
         <p>A first-person maze drawn by raycasting, wrapped in a pixel-art handheld. Combat, stats, spells, merchants.</p>
         <div class="actions">
@@ -623,6 +678,7 @@
     const active = Math.round(p * (ticks.length - 1));
     ticks.forEach((t, i) => t.classList.toggle('on', i === active));
     hint.classList.toggle('gone', current > 40);
+    if (!calm.matches && !aimRaf) aimRaf = requestAnimationFrame(aimTick);
   }
 
   // появление панелей — короткий каскад, без «всё летит снизу»
@@ -644,6 +700,28 @@
     const want = Math.max(0, Math.min(card.offsetLeft - innerWidth * 0.18, maxShift));
     scrollTo({ top: want, behavior: calm.matches ? 'auto' : 'smooth' });
   });
+
+  // прицел догоняет курсор и тянется по ходу ленты — один общий жест, а не два разных
+  const aim = document.querySelector('.aim');
+  let ax = innerWidth / 2, ay = innerHeight / 2, mx = ax, my = ay, speed = 0, prev = 0, aimRaf = 0;
+
+  function aimTick() {
+    ax += (mx - ax) * 0.18;
+    ay += (my - ay) * 0.18;
+    speed += (Math.abs(current - prev) - speed) * 0.2;
+    prev = current;
+    const stretch = 1 + Math.min(speed * 0.035, 1.6);
+    aim.style.transform = `translate3d(${ax}px, ${ay}px, 0) scaleX(${stretch})`;
+    aimRaf = (Math.abs(mx - ax) > 0.4 || speed > 0.2) ? requestAnimationFrame(aimTick) : 0;
+  }
+
+  addEventListener('pointermove', e => {
+    mx = e.clientX; my = e.clientY;
+    if (!aimRaf && !calm.matches) aimRaf = requestAnimationFrame(aimTick);
+  }, { passive: true });
+
+  rail.addEventListener('pointerover', e => aim.classList.toggle('hot', !!e.target.closest('.panel--game')));
+  rail.addEventListener('pointerout', () => aim.classList.remove('hot'));
 
   addEventListener('scroll', () => onScroll(false), { passive: true });
   addEventListener('resize', measure);
