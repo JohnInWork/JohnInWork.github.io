@@ -4,7 +4,7 @@
 
 Live page: [johninwork.github.io](https://johninwork.github.io)
 
-Selected work: a client site running in production, and six games with a short description and a screenshot each. Four of the games run right in the browser via GitHub Pages; the other two ship as source only.
+Selected work: a client site running in production, and seven games with a short description and a screenshot each. Five of the games run right in the browser via GitHub Pages; the other two ship as source only.
 
 ## Client work
 
@@ -20,6 +20,7 @@ Selected work: a client site running in production, and six games with a short d
 | Crush Factory | [play](https://johninwork.github.io/crush-factory/) | [crush-factory](https://github.com/JohnInWork/crush-factory) |
 | SlowmoFPS | [play](https://johninwork.github.io/slowmo-fps/) | [slowmo-fps](https://github.com/JohnInWork/slowmo-fps) |
 | Hex Quest | [play](https://johninwork.github.io/hex-quest/) | [hex-quest](https://github.com/JohnInWork/hex-quest) |
+| Voidle | [play](https://johninwork.github.io/voidle/) | [voidle](https://github.com/JohnInWork/voidle) |
 | Browser MMORPG | needs a server | [browser-mmorpg](https://github.com/JohnInWork/browser-mmorpg) |
 | Dungeon Crawler | needs a web build | [godot-dungeon-crawler](https://github.com/JohnInWork/godot-dungeon-crawler) |
 

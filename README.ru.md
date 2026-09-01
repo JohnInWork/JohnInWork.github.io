@@ -4,7 +4,7 @@
 
 Страница: [johninwork.github.io](https://johninwork.github.io)
 
-Избранные работы: сайт заказчика в проде и шесть игр с кратким описанием и кадром из каждой. Четыре игры запускаются прямо в браузере через GitHub Pages, у двух пока только исходники.
+Избранные работы: сайт заказчика в проде и семь игр с кратким описанием и кадром из каждой. Пять игр запускаются прямо в браузере через GitHub Pages, у двух пока только исходники.
 
 ## Работа с заказчиком
 
@@ -20,6 +20,7 @@
 | Crush Factory | [играть](https://johninwork.github.io/crush-factory/) | [crush-factory](https://github.com/JohnInWork/crush-factory) |
 | SlowmoFPS | [играть](https://johninwork.github.io/slowmo-fps/) | [slowmo-fps](https://github.com/JohnInWork/slowmo-fps) |
 | Hex Quest | [играть](https://johninwork.github.io/hex-quest/) | [hex-quest](https://github.com/JohnInWork/hex-quest) |
+| Voidle | [играть](https://johninwork.github.io/voidle/) | [voidle](https://github.com/JohnInWork/voidle) |
 | Браузерная MMORPG | нужен свой сервер | [browser-mmorpg](https://github.com/JohnInWork/browser-mmorpg) |
 | Dungeon Crawler | нужна сборка под web | [godot-dungeon-crawler](https://github.com/JohnInWork/godot-dungeon-crawler) |
 
