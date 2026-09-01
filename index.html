@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>John — design engineer</title>
-<meta name="description" content="Selected work by John, design engineer: seven games built from scratch — five playable right in the browser — and a client site running in production.">
+<meta name="description" content="Selected work by John, design engineer: a client site running in production and seven games built from scratch, five of them playable right in the browser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #e6e4df;
-    --panel: #fbfbfa;
-    --ink: #0f0f10;
-    --ink-dim: #6b6862;
-    --ink-faint: #a09c94;
-    --hair: #d8d5ce;
+    --paper: #0b0c0f;
+    --panel: #14161b;
+    --ink: #f2f1ee;
+    --ink-dim: #9b988f;
+    --ink-faint: #6b6862;
+    --hair: #23262d;
 
     --rail-gap: 64px;
-    --panel-size: min(42vh, 396px);   /* работы-квадраты: сторона одна на всех */
+    --panel-size: min(42vh, 396px);
 
     --ease: cubic-bezier(.2, 0, 0, 1);
     --ease-out: cubic-bezier(.05, .7, .1, 1);
@@ -36,7 +36,7 @@
     font-size: 16px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    overflow: hidden;                 /* навигацию ведём сами: вертикаль — разделы, горизонталь — работы */
+    overflow: hidden;
   }
 
   a { color: inherit; }
@@ -49,13 +49,9 @@
     color: var(--ink-faint);
   }
 
-  /* ── колода разделов: едет по вертикали ──────────────────────────────── */
+  /* ── колода разделов ─────────────────────────────────────────────────── */
 
-  .deck {
-    position: fixed;
-    inset: 0;
-    will-change: transform;
-  }
+  .deck { position: fixed; inset: 0; will-change: transform; }
 
   .cat {
     position: relative;
@@ -84,7 +80,7 @@
 
   .cat__count { color: var(--ink-faint); }
 
-  /* ── лента внутри раздела ────────────────────────────────────────────── */
+  /* ── лента ───────────────────────────────────────────────────────────── */
 
   .rail {
     display: flex;
@@ -101,29 +97,18 @@
     overflow: hidden;
   }
 
-  /* игры — квадраты */
-  .panel--work {
-    width: var(--panel-size);
-    height: var(--panel-size);
-  }
+  .panel--work { width: var(--panel-size); height: var(--panel-size); }
 
-  /* сайт живёт в своей пропорции: кадр целиком, без обрезки */
+  /* сайт — в своей пропорции, кадр целиком */
   .panel--site {
     height: min(52vh, 500px);
     aspect-ratio: 16 / 10;
     width: auto;
   }
 
-  .panel--site .panel__shot img { object-fit: contain; background: #0d0d0f; }
-
-  .panel--site .panel__label {
-    top: 0;
-    left: 0;
-    padding: 9px 14px;
-    background: rgba(8,8,9,.72);
-    text-shadow: none;
-  }
-  .panel--site .panel__name { font-size: clamp(38px, 6.4vh, 68px); }
+  .panel--site .panel__shot img { object-fit: contain; background: #08090b; }
+  .panel--site .panel__label { top: 0; left: 0; padding: 9px 14px; background: rgba(8,8,9,.72); text-shadow: none; }
+  .panel--site .panel__name { font-size: clamp(30px, 5vh, 52px); }
 
   .panel__label {
     position: absolute;
@@ -139,28 +124,29 @@
 
   .panel.in .panel__label { opacity: 1; }
 
+  /* имя целиком внутри панели — ничего не режем */
   .panel__name {
     position: absolute;
-    left: -3%;
+    left: 16px;
+    right: 16px;
     bottom: 12px;
     z-index: 2;
     margin: 0;
-    font-size: clamp(44px, 8.2vh, 86px);
+    font-size: clamp(30px, 5.6vh, 58px);
     font-weight: 700;
-    letter-spacing: -.05em;
-    line-height: .78;
-    white-space: nowrap;
-    overflow: hidden;
+    letter-spacing: -.045em;
+    line-height: .84;
     color: #fff;
-    text-shadow: 0 2px 24px rgba(0,0,0,.55);
+    text-shadow: 0 2px 24px rgba(0,0,0,.6);
     pointer-events: none;
+    overflow: hidden;
     will-change: transform;
   }
 
   .panel__name span {
     display: inline-block;
     transform: translateY(105%);
-    transition: transform .66s var(--ease-out) .1s;
+    transition: transform .62s var(--ease-out) .1s;
   }
 
   .panel.in .panel__name span { transform: translateY(0); }
@@ -171,8 +157,8 @@
     content: "";
     position: absolute;
     inset: auto 0 0;
-    height: 48%;
-    background: linear-gradient(to top, rgba(8,8,9,.74), rgba(8,8,9,0));
+    height: 46%;
+    background: linear-gradient(to top, rgba(6,6,8,.8), rgba(6,6,8,0));
     pointer-events: none;
   }
 
@@ -201,7 +187,7 @@
     bottom: 0;
     z-index: 4;
     padding: 92px 20px 20px;
-    background: linear-gradient(to top, rgba(8,8,9,.93) 34%, rgba(8,8,9,0));
+    background: linear-gradient(to top, rgba(6,6,8,.95) 34%, rgba(6,6,8,0));
     color: #fff;
     transform: translateY(14px);
     opacity: 0;
@@ -211,14 +197,14 @@
   .panel--work:hover .panel__meta,
   .panel--work:focus-within .panel__meta { transform: translateY(0); opacity: 1; }
 
-  .panel__meta p { margin: 0 0 14px; font-size: 13.5px; line-height: 1.45; color: #cfcdc8; }
+  .panel__meta p { margin: 0 0 14px; font-size: 13.5px; line-height: 1.45; color: #c7c4bd; }
 
   .blob {
     position: absolute;
     border-radius: 50%;
     background: var(--accent, #00e5ff);
     mix-blend-mode: screen;
-    opacity: .7;
+    opacity: .55;
     z-index: 1;
     animation: drift 24s ease-in-out infinite alternate;
     pointer-events: none;
@@ -246,17 +232,15 @@
   }
 
   .btn:active { transform: scale(.97); }
-
   .btn--play { background: var(--accent, #fff); color: #08080a; }
   .btn--code { background: rgba(255,255,255,.14); color: #fff; }
   .btn--code:hover { background: rgba(255,255,255,.24); }
-
   .btn--soon { display: inline-flex; align-items: center; height: 33px; font-size: 12px; color: #8f8c86; }
 
   :focus-visible { outline: 2px solid var(--accent, var(--ink)); outline-offset: 3px; border-radius: 4px; }
   .panel--text :focus-visible { outline-color: var(--ink); }
 
-  /* ── текстовые панели: вступление и контакты ─────────────────────────── */
+  /* ── текстовые панели ────────────────────────────────────────────────── */
 
   .panel--text {
     width: min(40vw, 500px);
@@ -274,11 +258,10 @@
     font-weight: 600;
     letter-spacing: -.035em;
     line-height: 1.08;
-    max-width: 16ch;
+    max-width: 17ch;
   }
 
   .intro__title em { font-style: normal; color: var(--ink-dim); }
-
   .intro__text { margin: 0 0 14px; max-width: 44ch; font-size: clamp(13.5px, 1.8vh, 16px); color: var(--ink-dim); }
 
   .intro__foot { margin-top: auto; display: flex; justify-content: space-between; gap: 20px; }
@@ -304,7 +287,6 @@
 
   /* ── навигация ───────────────────────────────────────────────────────── */
 
-  /* разделы — слева, вертикальный список */
   .nav {
     position: fixed;
     left: 6vw;
@@ -329,27 +311,47 @@
     transition: color .25s var(--ease);
   }
 
-  .nav b {
-    display: block;
-    width: 16px;
-    height: 2px;
-    background: currentColor;
-    transition: width .3s var(--ease-out);
-  }
-
+  .nav b { display: block; width: 16px; height: 2px; background: currentColor; transition: width .3s var(--ease-out); }
   .nav button.on { color: var(--ink); }
   .nav button.on b { width: 34px; }
   .nav button:hover { color: var(--ink); }
 
-  /* положение внутри раздела — снизу справа */
+  /* стрелки — для тех, кто не станет угадывать жесты */
+  .arrow {
+    position: fixed;
+    z-index: 6;
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--hair);
+    border-radius: 50%;
+    background: rgba(20,22,27,.72);
+    backdrop-filter: blur(6px);
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: color .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease), opacity .25s var(--ease);
+  }
+
+  .arrow:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .arrow:active { transform: scale(.94); }
+  .arrow[disabled] { opacity: .22; pointer-events: none; }
+  .arrow svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+
+  .arrow--prev { left: max(2vw, 16px); top: 50%; margin-top: -23px; }
+  .arrow--next { right: max(2vw, 16px); top: 50%; margin-top: -23px; }
+  .arrow--up   { right: 6vw; bottom: calc(max(6vh, 44px) + 56px); }
+  .arrow--down { right: 6vw; bottom: max(6vh, 44px); }
+
   .steps {
     position: fixed;
-    right: 6vw;
+    right: calc(6vw + 62px);
     bottom: max(6vh, 44px);
     z-index: 6;
     display: flex;
     align-items: center;
     gap: 4px;
+    height: 46px;
   }
 
   .steps i {
@@ -363,36 +365,49 @@
 
   .steps i.on { opacity: 1; width: 26px; background: var(--ink); }
 
+  /* переключатель языка */
+  .lang {
+    position: fixed;
+    top: max(6vh, 54px);
+    right: 6vw;
+    z-index: 7;
+    display: flex;
+    gap: 2px;
+  }
+
+  .lang button {
+    appearance: none;
+    border: 0;
+    background: none;
+    padding: 6px 9px;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    color: var(--ink-faint);
+    transition: color .2s var(--ease);
+  }
+
+  .lang button.on { color: var(--ink); }
+  .lang button:hover { color: var(--ink); }
+
   .aim {
     position: fixed;
     top: 0; left: 0;
     width: 15px; height: 15px;
     margin: -7.5px 0 0 -7.5px;
-    z-index: 7;
+    z-index: 8;
     pointer-events: none;
-    opacity: .34;
+    opacity: .3;
     transform: translate3d(50vw, 50vh, 0);
     will-change: transform;
     transition: opacity .3s var(--ease);
   }
 
-  .aim.hot { opacity: .9; }
+  .aim.hot { opacity: .85; }
   .aim::before, .aim::after { content: ""; position: absolute; background: var(--ink); }
   .aim::before { left: 50%; top: 0; width: 1px; height: 100%; }
   .aim::after { top: 50%; left: 0; height: 1px; width: 100%; }
-
-  .hint {
-    position: fixed;
-    left: 50%;
-    bottom: max(6vh, 44px);
-    transform: translateX(-50%);
-    z-index: 6;
-    display: flex;
-    gap: 18px;
-    transition: opacity .45s var(--ease);
-  }
-
-  .hint.gone { opacity: 0; }
 
   .panel { opacity: 0; transform: translate3d(24px, 12px, 0) scale(.97); }
 
@@ -402,7 +417,7 @@
     transition: opacity .5s var(--ease-out), transform .58s var(--ease-out);
   }
 
-  /* ── телефон: всё в одну колонку, свайпы не нужны ────────────────────── */
+  /* ── телефон ─────────────────────────────────────────────────────────── */
 
   @media (max-width: 860px) {
     body { overflow: auto; }
@@ -410,12 +425,14 @@
     .cat { height: auto; padding: 54px 0 10px; }
     .cat__head { position: static; padding: 0 18px 22px; }
     .rail { flex-direction: column; align-items: stretch; padding: 0 18px; gap: 34px; transform: none !important; }
-    .panel--work { width: auto; height: auto; aspect-ratio: 1; }
+    .panel--work, .panel--site { width: auto; height: auto; aspect-ratio: 1; }
+    .panel--site { aspect-ratio: 16 / 10; }
     .panel--text { width: auto; height: auto; }
     .panel__meta { opacity: 1; transform: none; }
-    .panel__name { top: 42px; bottom: auto; left: 14px; font-size: clamp(40px, 12vw, 78px); }
+    .panel__name { top: 42px; bottom: auto; font-size: clamp(34px, 10vw, 64px); }
     .panel__shot::after { height: 64%; }
-    .nav, .steps, .aim, .hint { display: none; }
+    .nav, .steps, .aim, .arrow { display: none; }
+    .lang { top: 14px; right: 14px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -429,21 +446,37 @@
 
 <div class="aim" aria-hidden="true"></div>
 
+<div class="lang" id="lang">
+  <button data-lang="en">EN</button>
+  <button data-lang="ru">RU</button>
+</div>
+
 <nav class="nav mono" id="nav" aria-label="Sections"></nav>
+
+<button class="arrow arrow--prev" id="prev" aria-label="Previous work"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+<button class="arrow arrow--next" id="next" aria-label="Next work"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+<button class="arrow arrow--up" id="up" aria-label="Previous section"><svg viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg></button>
+<button class="arrow arrow--down" id="down" aria-label="Next section"><svg viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg></button>
+
 <div class="steps" id="steps" aria-hidden="true"></div>
-<div class="hint mono" id="hint"><span>↕ sections</span><span>↔ works</span></div>
 
 <div class="deck" id="deck">
 
-  <!-- ── раздел 1: кто это ─────────────────────────────────────────────── -->
-  <section class="cat" data-name="Intro">
-    <div class="cat__head"><h2>Intro</h2></div>
+  <!-- ── вступление ────────────────────────────────────────────────────── -->
+  <section class="cat" data-name-en="Intro" data-name-ru="О себе">
+    <div class="cat__head"><h2 data-en="Intro" data-ru="О себе">Intro</h2></div>
     <div class="rail">
       <article class="panel panel--text">
-        <span class="panel__label mono">John · design engineer</span>
-        <h1 class="intro__title">I design things and <em>build them until they run.</em></h1>
-        <p class="intro__text">Seven games made from scratch — five of them start right here, in this browser, with nothing to install. Plus a client site running in production.</p>
-        <p class="intro__text">I pick the stack, design the thing and carry it to production. AI writes most of the code; I read it, test it and own what ships.</p>
+        <span class="panel__label mono" data-en="John · design engineer" data-ru="Джон · дизайн-инженер">John · design engineer</span>
+        <h1 class="intro__title"
+            data-en="I design things and <em>build them until they run.</em>"
+            data-ru="Проектирую вещи и <em>довожу их до работающих.</em>">I design things and <em>build them until they run.</em></h1>
+        <p class="intro__text"
+           data-en="A client site running in production, and seven games made from scratch — five of them start right here, in this browser, with nothing to install."
+           data-ru="Сайт заказчика в проде и семь игр, собранных с нуля — пять из них запускаются прямо здесь, в браузере, без установки.">A client site running in production, and seven games made from scratch — five of them start right here, in this browser, with nothing to install.</p>
+        <p class="intro__text"
+           data-en="I pick the stack, design the thing and carry it to production. AI writes most of the code; I read it, test it and own what ships."
+           data-ru="Я выбираю стек, проектирую и довожу до прода. Код в основном пишет ИИ; я его читаю, проверяю и отвечаю за результат.">I pick the stack, design the thing and carry it to production. AI writes most of the code; I read it, test it and own what ships.</p>
         <div class="intro__foot mono">
           <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
           <span>2026</span>
@@ -451,20 +484,48 @@
       </article>
 
       <article class="panel panel--text">
-        <span class="panel__label mono">Where to find me</span>
+        <span class="panel__label mono" data-en="Where to find me" data-ru="Где меня найти">Where to find me</span>
         <ul class="contact-list">
           <li><a href="https://github.com/JohnInWork">GitHub</a> <span class="mono">JohnInWork</span></li>
-          <li><a href="https://johninwork.github.io/voidle/">Voidle</a> <span class="mono">play</span></li>
-          <li><a href="https://magiaprostranstva.com">Magia Prostranstva</a> <span class="mono">live</span></li>
+          <li><a href="https://johninwork.github.io/voidle/">Voidle</a> <span class="mono" data-en="play" data-ru="играть">play</span></li>
+          <li><a href="https://magiaprostranstva.com">Magia Prostranstva</a> <span class="mono" data-en="live" data-ru="в проде">live</span></li>
         </ul>
-        <p class="intro__text" style="margin-top:22px">Seven games, one client site. All of it designed and shipped end to end.</p>
+        <p class="intro__text" style="margin-top:22px"
+           data-en="Seven games, one client site. All of it designed and shipped end to end."
+           data-ru="Семь игр и один сайт заказчика. Всё спроектировано и доведено до конца.">Seven games, one client site. All of it designed and shipped end to end.</p>
       </article>
     </div>
   </section>
 
-  <!-- ── раздел 2: игры ────────────────────────────────────────────────── -->
-  <section class="cat" data-name="Games">
-    <div class="cat__head"><h2>Games</h2><span class="cat__count mono">seven · five playable</span></div>
+  <!-- ── сайты ─────────────────────────────────────────────────────────── -->
+  <section class="cat" data-name-en="Sites" data-name-ru="Сайты">
+    <div class="cat__head">
+      <h2 data-en="Sites" data-ru="Сайты">Sites</h2>
+      <span class="cat__count mono" data-en="client work · in production" data-ru="работа с заказчиком · в проде">client work · in production</span>
+    </div>
+    <div class="rail">
+      <article class="panel panel--work panel--site" style="--accent:#c98a5e">
+        <span class="panel__label mono">Astro · Vercel</span>
+        <div class="panel__shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
+        <h3 class="panel__name"><span>Magia</span></h3>
+        <div class="panel__meta">
+          <p data-en="Site for a landscape architecture studio. The hero photo splits into vertical blades that flip and swap frames; cases are content collections, leads go straight to Telegram."
+             data-ru="Сайт студии ландшафтной архитектуры. Фото первого экрана делится на вертикальные планки, они переворачиваются и меняют кадры; кейсы — контент-коллекции, заявки уходят в Telegram.">Site for a landscape architecture studio. The hero photo splits into vertical blades that flip and swap frames; cases are content collections, leads go straight to Telegram.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://magiaprostranstva.com" data-en="Open site" data-ru="Открыть сайт">Open site</a>
+            <span class="btn--soon mono" data-en="Source private" data-ru="Код закрыт">Source private</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── игры ──────────────────────────────────────────────────────────── -->
+  <section class="cat" data-name-en="Games" data-name-ru="Игры">
+    <div class="cat__head">
+      <h2 data-en="Games" data-ru="Игры">Games</h2>
+      <span class="cat__count mono" data-en="seven · five playable" data-ru="семь · пять играбельных">seven · five playable</span>
+    </div>
     <div class="rail">
 
       <article class="panel panel--work" style="--accent:#00e5ff">
@@ -472,10 +533,25 @@
         <div class="panel__shot"><img src="shots/voidle.jpg" alt="Voidle — vertical space shooter"></div>
         <h3 class="panel__name"><span>Voidle</span></h3>
         <div class="panel__meta">
-          <p>The ship fires on its own; you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
+          <p data-en="The ship fires on its own; you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs."
+             data-ru="Корабль стреляет сам, ты уводишь его от пуль. Пять повадок врагов, четыре босса, прокачка между забегами.">The ship fires on its own; you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
           <div class="actions">
-            <a class="btn btn--play" href="https://johninwork.github.io/voidle/">Play</a>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/voidle">Code</a>
+            <a class="btn btn--play" href="https://johninwork.github.io/voidle/" data-en="Play" data-ru="Играть">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/voidle" data-en="Code" data-ru="Код">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel panel--work" style="--accent:#ff3b3b">
+        <span class="panel__label mono">Three.js · WebGL</span>
+        <div class="panel__shot"><img src="shots/superhot.jpg" alt="SlowmoFPS Runner — three lanes in a wireframe city"></div>
+        <h3 class="panel__name"><span>Slowmo</span></h3>
+        <div class="panel__meta">
+          <p data-en="An endless runner for phones: three lanes, a wireframe city, and time you can slow down when it gets tight."
+             data-ru="Бесконечный раннер для телефона: три полосы, каркасный город и время, которое можно замедлить, когда становится тесно.">An endless runner for phones: three lanes, a wireframe city, and time you can slow down when it gets tight.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://johninwork.github.io/slowmo-fps/" data-en="Play" data-ru="Играть">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/slowmo-fps" data-en="Code" data-ru="Код">Code</a>
           </div>
         </div>
       </article>
@@ -485,51 +561,41 @@
         <div class="panel__shot"><img src="shots/crush.jpg" alt="Crush Factory — the crusher grinding material"></div>
         <h3 class="panel__name"><span>Crush</span></h3>
         <div class="panel__meta">
-          <p>A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
+          <p data-en="A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages."
+             data-ru="Кликер, где дробилка правда дробит: куски падают между барабанов по физике. Скины, апгрейды, 10 языков.">A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
           <div class="actions">
-            <a class="btn btn--play" href="https://johninwork.github.io/crush-factory/">Play</a>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/crush-factory">Code</a>
+            <a class="btn btn--play" href="https://johninwork.github.io/crush-factory/" data-en="Play" data-ru="Играть">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/crush-factory" data-en="Code" data-ru="Код">Code</a>
           </div>
         </div>
-        <div class="blob" style="--accent:#ff7a1a; width:26vh; height:26vh; right:-12vh; top:-8vh"></div>
-      </article>
-
-      <article class="panel panel--work" style="--accent:#ff3b3b">
-        <span class="panel__label mono">Three.js · WebGL</span>
-        <div class="panel__shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
-        <h3 class="panel__name"><span>Slowmo</span></h3>
-        <div class="panel__meta">
-          <p>Time moves only when you do. Black world, white polygon edges, post-processing written by hand.</p>
-          <div class="actions">
-            <a class="btn btn--play" href="https://johninwork.github.io/slowmo-fps/">Play</a>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/slowmo-fps">Code</a>
-          </div>
-        </div>
+        <div class="blob" style="--accent:#ff7a1a; width:24vh; height:24vh; right:-11vh; top:-8vh"></div>
       </article>
 
       <article class="panel panel--work" style="--accent:#c9dd00">
-        <span class="panel__label mono">Canvas · one HTML file</span>
+        <span class="panel__label mono" data-en="Canvas · one HTML file" data-ru="Canvas · один HTML-файл">Canvas · one HTML file</span>
         <div class="panel__shot"><img src="shots/hex.jpg" alt="Hex Quest — a hex map under fog"></div>
         <h3 class="panel__name"><span>Hex</span></h3>
         <div class="panel__meta">
-          <p>A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
+          <p data-en="A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters."
+             data-ru="Карта под туманом: клик открывает клетку и сразу разыгрывает, что под ней. Инвентарь, снаряжение, 15 персонажей.">A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
           <div class="actions">
-            <a class="btn btn--play" href="https://johninwork.github.io/hex-quest/">Play</a>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/hex-quest">Code</a>
+            <a class="btn btn--play" href="https://johninwork.github.io/hex-quest/" data-en="Play" data-ru="Играть">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/hex-quest" data-en="Code" data-ru="Код">Code</a>
           </div>
         </div>
-        <div class="blob" style="--accent:#c9dd00; width:22vh; height:22vh; left:-10vh; bottom:-8vh"></div>
+        <div class="blob" style="--accent:#c9dd00; width:20vh; height:20vh; left:-9vh; bottom:-7vh"></div>
       </article>
 
       <article class="panel panel--work" style="--accent:#3bd16f">
-        <span class="panel__label mono">Canvas · vanilla JS</span>
+        <span class="panel__label mono" data-en="Canvas · vanilla JS" data-ru="Canvas · чистый JS">Canvas · vanilla JS</span>
         <div class="panel__shot"><img src="shots/flow.jpg" alt="Flow Connect — a shaped level with coloured lines"></div>
         <h3 class="panel__name"><span>Flow</span></h3>
         <div class="panel__meta">
-          <p>Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
+          <p data-en="Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode."
+             data-ru="Соединяешь точки одного цвета, не пересекая трубы. 271 уровень: фигурные поля, мосты, режим на время.">Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
           <div class="actions">
-            <a class="btn btn--play" href="https://johninwork.github.io/flow-connect/">Play</a>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/flow-connect">Code</a>
+            <a class="btn btn--play" href="https://johninwork.github.io/flow-connect/" data-en="Play" data-ru="Играть">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/flow-connect" data-en="Code" data-ru="Код">Code</a>
           </div>
         </div>
       </article>
@@ -539,13 +605,14 @@
         <div class="panel__shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
         <h3 class="panel__name"><span>MMO</span></h3>
         <div class="panel__meta">
-          <p>An online world with a map editor built in: paint the terrain, assemble mobs and NPCs, changes go live without a restart.</p>
+          <p data-en="An online world with a map editor built in: paint the terrain, assemble mobs and NPCs, changes go live without a restart."
+             data-ru="Онлайн-мир со своим редактором карт: рисуешь местность кистью, собираешь мобов и НПС, правки уходят в игру без перезапуска.">An online world with a map editor built in: paint the terrain, assemble mobs and NPCs, changes go live without a restart.</p>
           <div class="actions">
-            <span class="btn--soon mono">Needs a server</span>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
+            <span class="btn--soon mono" data-en="Needs a server" data-ru="Нужен сервер">Needs a server</span>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/browser-mmorpg" data-en="Code" data-ru="Код">Code</a>
           </div>
         </div>
-        <div class="blob" style="--accent:#59b0ea; width:24vh; height:24vh; right:-11vh; bottom:-10vh"></div>
+        <div class="blob" style="--accent:#59b0ea; width:22vh; height:22vh; right:-10vh; bottom:-9vh"></div>
       </article>
 
       <article class="panel panel--work" style="--accent:#c9803f">
@@ -553,35 +620,14 @@
         <div class="panel__shot"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
         <h3 class="panel__name"><span>Dungeon</span></h3>
         <div class="panel__meta">
-          <p>A first-person maze drawn by raycasting, wrapped in a pixel-art handheld. Combat, stats, spells, merchants.</p>
+          <p data-en="A first-person maze drawn by raycasting, wrapped in a pixel-art handheld. Combat, stats, spells, merchants."
+             data-ru="Лабиринт от первого лица, нарисованный рейкастингом, внутри пиксельной консоли. Бой, характеристики, заклинания, торговцы.">A first-person maze drawn by raycasting, wrapped in a pixel-art handheld. Combat, stats, spells, merchants.</p>
           <div class="actions">
-            <span class="btn--soon mono">Screenshots only</span>
-            <a class="btn btn--code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Code</a>
+            <span class="btn--soon mono" data-en="Screenshots only" data-ru="Только кадры">Screenshots only</span>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/godot-dungeon-crawler" data-en="Code" data-ru="Код">Code</a>
           </div>
         </div>
       </article>
-
-    </div>
-  </section>
-
-  <!-- ── раздел 3: сайты ───────────────────────────────────────────────── -->
-  <section class="cat" data-name="Sites">
-    <div class="cat__head"><h2>Sites</h2><span class="cat__count mono">client work · in production</span></div>
-    <div class="rail">
-
-      <article class="panel panel--work panel--site" style="--accent:#c98a5e">
-        <span class="panel__label mono">Astro · Vercel</span>
-        <div class="panel__shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
-        <h3 class="panel__name"><span>Magia</span></h3>
-        <div class="panel__meta">
-          <p>Site for a landscape architecture studio. The hero photo splits into vertical blades that flip and swap frames; cases are content collections, leads go straight to Telegram.</p>
-          <div class="actions">
-            <a class="btn btn--play" href="https://magiaprostranstva.com">Open site</a>
-            <span class="btn--soon mono">Source private</span>
-          </div>
-        </div>
-      </article>
-
 
     </div>
   </section>
@@ -593,12 +639,15 @@
   const deck  = document.getElementById('deck');
   const nav   = document.getElementById('nav');
   const steps = document.getElementById('steps');
-  const hint  = document.getElementById('hint');
   const cats  = [...deck.querySelectorAll('.cat')];
   const calm  = matchMedia('(prefers-reduced-motion: reduce)');
   const wide  = matchMedia('(min-width: 861px)');
 
-  // у каждого раздела своя лента со своим положением
+  const btnPrev = document.getElementById('prev');
+  const btnNext = document.getElementById('next');
+  const btnUp   = document.getElementById('up');
+  const btnDown = document.getElementById('down');
+
   const state = cats.map(cat => ({
     cat,
     rail: cat.querySelector('.rail'),
@@ -608,10 +657,30 @@
 
   let index = 0, deckY = 0, deckTarget = 0, raf = 0;
 
-  // ── список разделов слева ──────────────────────────────────────────────
+  // ── язык ───────────────────────────────────────────────────────────────
+  const langBox = document.getElementById('lang');
+  let lang = localStorage.getItem('lang') || ((navigator.language || '').startsWith('ru') ? 'ru' : 'en');
+  if (!['en', 'ru'].includes(lang)) lang = 'en';
+
+  function applyLang(next) {
+    lang = next;
+    localStorage.setItem('lang', next);
+    document.documentElement.lang = next;
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const text = el.getAttribute('data-' + next);
+      if (text != null) el.innerHTML = text;
+    });
+    [...langBox.children].forEach(b => b.classList.toggle('on', b.dataset.lang === next));
+    navBtns.forEach((b, i) => b.querySelector('span').textContent = cats[i].getAttribute('data-name-' + next));
+    measure();
+  }
+
+  [...langBox.children].forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+  // ── список разделов ────────────────────────────────────────────────────
   cats.forEach((cat, i) => {
     const b = document.createElement('button');
-    b.innerHTML = '<b></b><span>' + cat.dataset.name + '</span>';
+    b.innerHTML = '<b></b><span>' + cat.dataset.nameEn + '</span>';
     b.addEventListener('click', () => go(i));
     nav.appendChild(b);
   });
@@ -669,12 +738,9 @@
 
     state.forEach(s => {
       s.rail.style.transform = `translate3d(${-s.x}px, 0, 0)`;
-      // расслойка: кадр отстаёт от панели, имя обгоняет
       s.panels.forEach(p => {
-        const img  = p.querySelector('.panel__shot img');
-        const name = p.querySelector('.panel__name');
-        if (img)  img.style.transform  = `translate3d(${s.x * 0.04}px, 0, 0)`;
-        if (name) name.style.transform = `translate3d(${s.x * -0.028}px, 0, 0)`;
+        const img = p.querySelector('.panel__shot img');
+        if (img) img.style.transform = `translate3d(${s.x * 0.04}px, 0, 0)`;
       });
     });
 
@@ -682,11 +748,23 @@
     const p = s.max ? s.x / s.max : 0;
     const active = Math.round(p * (steps.children.length - 1));
     [...steps.children].forEach((t, i) => t.classList.toggle('on', i === active));
-    hint.classList.toggle('gone', s.x > 40 || index > 0);
+
+    // стрелки гаснут там, где ехать больше некуда
+    btnPrev.disabled = s.x <= 1;
+    btnNext.disabled = s.x >= s.max - 1;
+    btnUp.disabled = index === 0;
+    btnDown.disabled = index === cats.length - 1;
+
     if (!instant) aimKick();
   }
 
-  // ── ввод: вертикаль листает разделы, горизонталь ведёт работы ─────────
+  const step = () => innerWidth * 0.38;
+  btnPrev.addEventListener('click', () => slide(-step()));
+  btnNext.addEventListener('click', () => slide(step()));
+  btnUp.addEventListener('click', () => go(index - 1));
+  btnDown.addEventListener('click', () => go(index + 1));
+
+  // ── ввод ───────────────────────────────────────────────────────────────
   let wheelLock = 0;
 
   addEventListener('wheel', e => {
@@ -695,34 +773,31 @@
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { slide(e.deltaX * 1.1); return; }
     const now = performance.now();
     if (now < wheelLock || Math.abs(e.deltaY) < 8) return;
-    wheelLock = now + 520;                       // один разворот колеса = один раздел
+    wheelLock = now + 520;
     go(index + Math.sign(e.deltaY));
   }, { passive: false });
 
   addEventListener('keydown', e => {
     if (!wide.matches) return;
-    const step = innerWidth * 0.35;
-    if (e.key === 'ArrowRight') { slide(step); e.preventDefault(); }
-    else if (e.key === 'ArrowLeft') { slide(-step); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { slide(step()); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { slide(-step()); e.preventDefault(); }
     else if (e.key === 'ArrowDown' || e.key === 'PageDown') { go(index + 1); e.preventDefault(); }
     else if (e.key === 'ArrowUp' || e.key === 'PageUp') { go(index - 1); e.preventDefault(); }
     else if (e.key === 'Home') { go(0); e.preventDefault(); }
   });
 
-  // перетаскивание мышью — для тех, у кого только колесо
   let drag = null;
   deck.addEventListener('pointerdown', e => {
     if (!wide.matches || e.target.closest('a, button')) return;
-    drag = { x: e.clientX, y: e.clientY, moved: false };
+    drag = { x: e.clientX };
   });
   addEventListener('pointermove', e => {
     if (!drag) return;
     const dx = e.clientX - drag.x;
-    if (Math.abs(dx) > 2) { slide(-dx); drag.x = e.clientX; drag.moved = true; }
+    if (Math.abs(dx) > 2) { slide(-dx); drag.x = e.clientX; }
   });
   addEventListener('pointerup', () => { drag = null; });
 
-  // свайп по касанию: ось решает, что двигать
   let touch = null;
   addEventListener('touchstart', e => {
     if (!wide.matches) return;
@@ -740,7 +815,7 @@
 
   addEventListener('touchend', () => { touch = null; }, { passive: true });
 
-  // ── появление панелей ────────────────────────────────────────────────
+  // ── появление панелей ─────────────────────────────────────────────────
   const io = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
       if (!e.isIntersecting) return;
@@ -751,7 +826,7 @@
 
   state.forEach(s => s.panels.forEach(p => io.observe(p)));
 
-  // ── прицел ───────────────────────────────────────────────────────────
+  // ── прицел ────────────────────────────────────────────────────────────
   const aim = document.querySelector('.aim');
   let ax = innerWidth / 2, ay = innerHeight / 2, mx = ax, my = ay, prevX = 0, speed = 0, aimRaf = 0;
 
@@ -769,7 +844,6 @@
   addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; aimKick(); }, { passive: true });
   deck.addEventListener('pointerover', e => aim.classList.toggle('hot', !!e.target.closest('.panel--work')));
 
-  // фокус клавиатурой подтягивает свою панель и свой раздел
   deck.addEventListener('focusin', e => {
     if (!wide.matches) return;
     const cat = e.target.closest('.cat');
@@ -783,6 +857,7 @@
   });
 
   addEventListener('resize', measure);
+  applyLang(lang);
   go(0);
   measure();
 })();
