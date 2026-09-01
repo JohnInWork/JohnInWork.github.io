@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Игры — Иван Кузнецов</title>
+<meta name="description" content="Шесть игр, собранных с нуля: головоломка, кликер с физикой, шутер на Three.js, онлайн-MMORPG, гексагональная стратегия и лабиринт на Godot. Четыре можно запустить прямо в браузере.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d12;
+    --bg-card: #12151d;
+    --bg-card-hover: #171b25;
+    --ink: #e8eaf0;
+    --ink-dim: #9aa1b1;
+    --ink-faint: #646b7d;
+    --accent: #6ee7a8;
+    --accent-ink: #0b0d12;
+    --line: #1e232f;
+    --radius-card: 20px;
+    --radius-inner: 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── шапка ── */
+
+  header {
+    padding: 88px 0 56px;
+  }
+
+  h1 {
+    margin: 0 0 18px;
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+
+  .lead {
+    margin: 0;
+    max-width: 620px;
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.5;
+    color: var(--ink-dim);
+    font-weight: 400;
+  }
+
+  .lead b { color: var(--ink); font-weight: 600; }
+
+  .meta {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    font-size: 15px;
+    color: var(--ink-faint);
+  }
+
+  .meta a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .meta a:hover { color: var(--ink); border-bottom-color: var(--ink-faint); }
+
+  /* ── сетка игр ── */
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    padding-bottom: 40px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border-radius: var(--radius-card);
+    padding: 12px 12px 22px;
+    transition: background .18s ease, transform .18s ease;
+  }
+
+  .card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+
+  .shot {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-inner);
+    overflow: hidden;
+    background: #05060a;
+  }
+
+  .shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /* вертикальные игры показываем целиком, а не обрезкой */
+  .shot.fit img { object-fit: contain; }
+
+  .body { padding: 20px 10px 0; flex: 1; display: flex; flex-direction: column; }
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 21px;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  .desc {
+    margin: 0 0 16px;
+    color: var(--ink-dim);
+    font-size: 15px;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .stack {
+    margin: 0 0 20px;
+    font-size: 13px;
+    color: var(--ink-faint);
+    letter-spacing: 0.01em;
+  }
+
+  .actions { display: flex; align-items: center; gap: 10px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity .15s ease, background .15s ease;
+  }
+
+  .btn-play {
+    background: var(--accent);
+    color: var(--accent-ink);
+    flex: 1;
+  }
+
+  .btn-play:hover { opacity: .88; }
+
+  .btn-code {
+    background: #1c212c;
+    color: var(--ink);
+  }
+
+  .btn-code:hover { background: #242a38; }
+
+  .btn-code.solo { flex: 1; }
+
+  .no-demo {
+    flex: 1;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: var(--ink-faint);
+  }
+
+  footer {
+    padding: 40px 0 72px;
+    color: var(--ink-faint);
+    font-size: 14px;
+  }
+
+  footer a { color: var(--ink-dim); text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+
+  @media (max-width: 640px) {
+    header { padding: 56px 0 36px; }
+    .wrap { padding: 0 18px; }
+    .grid { gap: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <h1>Игры</h1>
+    <p class="lead">Шесть игр, собранных с нуля — от головоломки до онлайн-мира с собственным редактором карт. <b>Четыре можно запустить прямо здесь</b>, в браузере, без установки.</p>
+    <div class="meta">
+      <span>Иван Кузнецов</span>
+      <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <article class="card">
+      <div class="shot"><img src="shots/flow.png" alt="Flow Connect — фигурный уровень с цветными линиями"></div>
+      <div class="body">
+        <h2>Flow Connect</h2>
+        <p class="desc">Соединяешь точки одного цвета так, чтобы трубы не пересеклись и заполнили поле. 271 уровень: поля-маски нестандартной формы, мосты, режим на время.</p>
+        <p class="stack">Canvas · чистый JS · генератор на гамильтоновых путях</p>
+        <div class="actions">
+          <a class="btn btn-play" href="https://johninwork.github.io/flow-connect/">Играть</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/flow-connect">Код</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="shot"><img src="shots/crush.png" alt="Crush Factory — дробилка перемалывает материал"></div>
+      <div class="body">
+        <h2>Crush Factory</h2>
+        <p class="desc">Кликер, где дробилка правда дробит: куски падают между вращающихся барабанов по физике, а не по анимации. Материалы, апгрейды, скины, 10 языков.</p>
+        <p class="stack">Canvas · Matter.js · 10 языков</p>
+        <div class="actions">
+          <a class="btn btn-play" href="https://johninwork.github.io/crush-factory/">Играть</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/crush-factory">Код</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="shot"><img src="shots/superhot.jpg" alt="SUPERHOT FPS — вайрфреймовый мир и пистолет"></div>
+      <div class="body">
+        <h2>SUPERHOT FPS</h2>
+        <p class="desc">Шутер, где время идёт, только когда идёшь ты: стоишь — мир почти замирает. Чёрный мир, белые рёбра полигонов, кинематографическая постобработка своими шейдерами.</p>
+        <p class="stack">Three.js · WebGL · свои шейдерные проходы</p>
+        <div class="actions">
+          <a class="btn btn-play" href="https://johninwork.github.io/superhot-fps/">Играть</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/superhot-fps">Код</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="shot"><img src="shots/hex.png" alt="Hex Quest — гексагональная карта под туманом"></div>
+      <div class="body">
+        <h2>Hex Quest</h2>
+        <p class="desc">Карта закрыта туманом, каждый клик открывает клетку и сразу разыгрывает то, что под ней. Здоровье, еда и мечи убывают — идти приходится всё время в новое.</p>
+        <p class="stack">Canvas · один HTML-файл · ландшафтная генерация</p>
+        <div class="actions">
+          <a class="btn btn-play" href="https://johninwork.github.io/hex-quest/">Играть</a>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/hex-quest">Код</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="shot"><img src="shots/mmorpg.jpg" alt="Браузерная MMORPG — изометрический мир"></div>
+      <div class="body">
+        <h2>Браузерная MMORPG</h2>
+        <p class="desc">Онлайн-мир: игроки видят друг друга, бьют мобов, собирают лут. Весь мир рисуется в собственной админке — кистью по карте, с конструкторами мобов, НПС и предметов.</p>
+        <p class="stack">Node.js · Socket.IO · Canvas · живой редактор карт</p>
+        <div class="actions">
+          <span class="no-demo">Нужен свой сервер</span>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/browser-mmorpg">Код</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="shot fit"><img src="shots/godot.jpg" alt="Dungeon Crawler — псевдо-3D лабиринт"></div>
+      <div class="body">
+        <h2>Dungeon Crawler</h2>
+        <p class="desc">Лабиринт от первого лица для телефона: коридор рисуется рейкастингом по тайловой карте. Бой, характеристики, заклинания, торговцы с квестами.</p>
+        <p class="stack">Godot 4 · GDScript · портретный режим</p>
+        <div class="actions">
+          <span class="no-demo">Нужна сборка под web</span>
+          <a class="btn btn-code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Код</a>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Игры сделаны в свободное время. Исходники открыты — <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
