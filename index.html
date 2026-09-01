@@ -10,15 +10,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #e6e4df;          /* тёплый бумажный фон — вся лента лежит на нём */
+    --paper: #e6e4df;
     --panel: #fbfbfa;
     --ink: #0f0f10;
     --ink-dim: #6b6862;
     --ink-faint: #a09c94;
     --hair: #d8d5ce;
 
-    --rail-gap: 72px;
-    --panel-h: 58vh;
+    --rail-gap: 64px;
+    --panel-size: min(56vh, 540px);   /* панели квадратные: сторона одна на всех */
 
     --ease: cubic-bezier(.2, 0, 0, 1);
     --ease-out: cubic-bezier(.05, .7, .1, 1);
@@ -26,7 +26,7 @@
 
   * { box-sizing: border-box; }
 
-  html { -webkit-text-size-adjust: 100%; }
+  html, body { height: 100%; }
 
   body {
     margin: 0;
@@ -36,7 +36,7 @@
     font-size: 16px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow: hidden;                 /* навигацию ведём сами: вертикаль — разделы, горизонталь — работы */
   }
 
   a { color: inherit; }
@@ -49,55 +49,85 @@
     color: var(--ink-faint);
   }
 
-  /* ── лента ───────────────────────────────────────────────────────────── */
+  /* ── колода разделов: едет по вертикали ──────────────────────────────── */
 
-  .stage {
+  .deck {
     position: fixed;
     inset: 0;
-    overflow: hidden;
-  }
-
-  .rail {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--rail-gap);
-    padding: 0 18vw;
-    transform: translate3d(0, -50%, 0);
     will-change: transform;
   }
 
-  /* высота страницы = длина ленты; сам скролл невидим */
-  .ghost { height: 100vh; }
+  .cat {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 
-  /* ── панель ──────────────────────────────────────────────────────────── */
+  .cat__head {
+    position: absolute;
+    top: max(6vh, 54px);
+    left: 6vw;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .cat__head h2 {
+    margin: 0;
+    font-size: clamp(30px, 5.2vh, 56px);
+    font-weight: 700;
+    letter-spacing: -.04em;
+    line-height: 1;
+  }
+
+  .cat__count { color: var(--ink-faint); }
+
+  /* ── лента внутри раздела ────────────────────────────────────────────── */
+
+  .rail {
+    display: flex;
+    align-items: center;
+    gap: var(--rail-gap);
+    padding: 0 6vw;
+    will-change: transform;
+  }
 
   .panel {
     position: relative;
     flex: 0 0 auto;
-    height: var(--panel-h);
     background: var(--panel);
     overflow: hidden;
+  }
+
+  /* работы — квадраты */
+  .panel--work {
+    width: var(--panel-size);
+    height: var(--panel-size);
   }
 
   .panel__label {
     position: absolute;
     top: 16px;
     left: 18px;
-    white-space: nowrap;
     z-index: 3;
+    white-space: nowrap;
+    color: rgba(255,255,255,.78);
+    text-shadow: 0 1px 10px rgba(0,0,0,.6);
+    opacity: 0;
+    transition: opacity .4s var(--ease) .25s;
   }
 
-  /* гигантское имя — характер страницы; края панели режут его намеренно */
+  .panel.in .panel__label { opacity: 1; }
+
   .panel__name {
     position: absolute;
     left: -3%;
     bottom: 12px;
     z-index: 2;
     margin: 0;
-    font-size: clamp(52px, 11vh, 104px);
+    font-size: clamp(44px, 8.2vh, 86px);
     font-weight: 700;
     letter-spacing: -.05em;
     line-height: .78;
@@ -109,84 +139,22 @@
     will-change: transform;
   }
 
-  .panel__label {
-    z-index: 3;
-    color: rgba(255,255,255,.78);
-    text-shadow: 0 1px 10px rgba(0,0,0,.6);
+  .panel__name span {
+    display: inline-block;
+    transform: translateY(105%);
+    transition: transform .66s var(--ease-out) .1s;
   }
 
-  /* цветное пятно игры — вылезает за панель и наезжает на соседнюю */
-  .blob {
-    position: absolute;
-    border-radius: 50%;
-    background: var(--accent, #00e5ff);
-    mix-blend-mode: screen;
-    opacity: .7;
-    z-index: 1;
-    animation: drift 22s ease-in-out infinite alternate;
-    pointer-events: none;
-    will-change: transform;
-  }
+  .panel.in .panel__name span { transform: translateY(0); }
 
-  @keyframes drift {
-    from { transform: translate3d(0, 0, 0); }
-    to   { transform: translate3d(-16px, 22px, 0); }
-  }
+  .panel__shot { position: absolute; inset: 0; overflow: hidden; }
 
-  /* ── интро ───────────────────────────────────────────────────────────── */
-
-  .panel--intro { width: min(42vw, 560px); padding: 56px 40px 36px; }
-  .panel--intro .panel__label,
-  .panel--contact .panel__label { color: var(--ink-faint); }
-
-  .intro__title {
-    margin: 0 0 22px;
-    font-size: clamp(30px, 4.4vh, 48px);
-    font-weight: 600;
-    letter-spacing: -.035em;
-    line-height: 1.06;
-    max-width: 15ch;
-  }
-
-  .intro__title em { font-style: normal; color: var(--ink-dim); }
-
-  .intro__text {
-    margin: 0 0 18px;
-    max-width: 44ch;
-    font-size: clamp(14px, 1.9vh, 17px);
-    color: var(--ink-dim);
-  }
-
-  .intro__foot {
-    position: absolute;
-    left: 40px;
-    right: 40px;
-    bottom: 32px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-
-  .intro__foot a { text-decoration: none; border-bottom: 1px solid var(--hair); }
-  .intro__foot a:hover { border-bottom-color: var(--ink); color: var(--ink); }
-
-  /* ── игровая панель ──────────────────────────────────────────────────── */
-
-  .panel--game { width: min(23vw, 318px); }
-
-  .panel__shot {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-  }
-
-  /* тихая подложка под имя: кадры бывают и светлыми, и тёмными */
   .panel__shot::after {
     content: "";
     position: absolute;
     inset: auto 0 0;
-    height: 46%;
-    background: linear-gradient(to top, rgba(8,8,9,.72), rgba(8,8,9,0));
+    height: 48%;
+    background: linear-gradient(to top, rgba(8,8,9,.74), rgba(8,8,9,0));
     pointer-events: none;
   }
 
@@ -196,17 +164,17 @@
     object-fit: cover;
     display: block;
     will-change: transform;
-    animation: breathe 16s ease-in-out infinite alternate;   /* ambient: кадр еле заметно дышит */
+    animation: breathe 18s ease-in-out infinite alternate;
     transition: filter .5s var(--ease);
   }
 
   @keyframes breathe {
-    from { transform: scale(1.03); }
-    to   { transform: scale(1.09); }
+    from { transform: scale(1.02); }
+    to   { transform: scale(1.08); }
   }
 
-  .panel--game:hover .panel__shot img,
-  .panel--game:focus-within .panel__shot img { filter: saturate(1.12) contrast(1.04); }
+  .panel--work:hover .panel__shot img,
+  .panel--work:focus-within .panel__shot img { filter: saturate(1.12) contrast(1.04); }
 
   .panel__meta {
     position: absolute;
@@ -214,27 +182,45 @@
     right: 0;
     bottom: 0;
     z-index: 4;
-    padding: 96px 22px 22px;
-    background: linear-gradient(to top, rgba(8,8,9,.92) 32%, rgba(8,8,9,0));
+    padding: 92px 20px 20px;
+    background: linear-gradient(to top, rgba(8,8,9,.93) 34%, rgba(8,8,9,0));
     color: #fff;
     transform: translateY(14px);
     opacity: 0;
     transition: transform .34s var(--ease-out), opacity .28s var(--ease-out);
   }
 
-  .panel--game:hover .panel__meta,
-  .panel--game:focus-within .panel__meta { transform: translateY(0); opacity: 1; }
+  .panel--work:hover .panel__meta,
+  .panel--work:focus-within .panel__meta { transform: translateY(0); opacity: 1; }
 
-  .panel__meta p { margin: 0 0 16px; font-size: 14px; line-height: 1.45; color: #cfcdc8; }
+  .panel__meta p { margin: 0 0 14px; font-size: 13.5px; line-height: 1.45; color: #cfcdc8; }
 
-  .actions { display: flex; gap: 8px; }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--accent, #00e5ff);
+    mix-blend-mode: screen;
+    opacity: .7;
+    z-index: 1;
+    animation: drift 24s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-18px, 24px, 0); }
+  }
+
+  /* ── кнопки ──────────────────────────────────────────────────────────── */
+
+  .actions { display: flex; gap: 8px; align-items: center; }
 
   .btn {
     display: inline-flex;
     align-items: center;
-    height: 34px;
+    height: 33px;
     padding: 0 15px;
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 600;
     text-decoration: none;
     border-radius: 999px;
@@ -243,83 +229,54 @@
 
   .btn:active { transform: scale(.97); }
 
-  :focus-visible {
-    outline: 2px solid var(--accent, #fff);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  .panel--intro :focus-visible,
-  .panel--contact :focus-visible { outline-color: var(--ink); }
-
   .btn--play { background: var(--accent, #fff); color: #08080a; }
   .btn--code { background: rgba(255,255,255,.14); color: #fff; }
   .btn--code:hover { background: rgba(255,255,255,.24); }
 
-  .btn--soon {
-    display: inline-flex;
-    align-items: center;
-    height: 34px;
-    font-size: 12.5px;
-    color: #8f8c86;
-  }
+  .btn--soon { display: inline-flex; align-items: center; height: 33px; font-size: 12px; color: #8f8c86; }
 
-  /* ── широкая панель клиентской работы ────────────────────────────────── */
+  :focus-visible { outline: 2px solid var(--accent, var(--ink)); outline-offset: 3px; border-radius: 4px; }
+  .panel--text :focus-visible { outline-color: var(--ink); }
 
-  .panel--client { width: min(42vw, 560px); }
-  .panel--client .panel__meta { opacity: 1; transform: none; padding: 90px 34px 30px; }
-  .panel--client .panel__meta h4 {
-    margin: 0 0 10px;
-    font-size: clamp(22px, 3.4vh, 34px);
-    font-weight: 600;
-    letter-spacing: -.03em;
-  }
-  .panel--client .panel__meta p { max-width: 52ch; font-size: 15px; }
+  /* ── текстовые панели: вступление и контакты ─────────────────────────── */
 
-  /* ── разделитель-глава ───────────────────────────────────────────────── */
-
-  .chapter {
-    flex: 0 0 auto;
-    height: var(--panel-h);
-    width: 15vw;
+  .panel--text {
+    width: min(46vw, 560px);
+    height: var(--panel-size);
+    padding: 42px 38px 34px;
     display: flex;
-    align-items: flex-end;
-    padding-bottom: 6px;
+    flex-direction: column;
   }
 
-  .chapter h2 { overflow: hidden; }
-  .chapter h2 span {
-    display: inline-block;
-    transform: translateY(105%);
-    transition: transform .7s var(--ease-out) .1s;
-  }
-  .chapter.in h2 span { transform: translateY(0); }
+  .panel--text .panel__label { position: static; color: var(--ink-faint); text-shadow: none; margin-bottom: 18px; }
 
-  .chapter h2 {
-    margin: 0;
-    font-size: clamp(56px, 13vh, 128px);
-    font-weight: 700;
-    letter-spacing: -.05em;
-    line-height: .8;
-    color: var(--ink);
+  .intro__title {
+    margin: 0 0 18px;
+    font-size: clamp(26px, 3.9vh, 40px);
+    font-weight: 600;
+    letter-spacing: -.035em;
+    line-height: 1.08;
+    max-width: 16ch;
   }
 
-  .chapter span { display: block; margin-bottom: 14px; }
+  .intro__title em { font-style: normal; color: var(--ink-dim); }
 
-  /* ── контакты ────────────────────────────────────────────────────────── */
+  .intro__text { margin: 0 0 14px; max-width: 44ch; font-size: clamp(13.5px, 1.8vh, 16px); color: var(--ink-dim); }
 
-  .panel--contact { width: min(30vw, 400px); padding: 56px 38px 38px; }
+  .intro__foot { margin-top: auto; display: flex; justify-content: space-between; gap: 20px; }
+  .intro__foot a { text-decoration: none; border-bottom: 1px solid var(--hair); }
+  .intro__foot a:hover { border-bottom-color: var(--ink); color: var(--ink); }
 
-  .contact-list { margin: 26px 0 0; padding: 0; list-style: none; }
+  .contact-list { margin: 8px 0 0; padding: 0; list-style: none; }
 
   .contact-list li {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 16px;
-    padding: 15px 0;
+    padding: 13px 0;
     border-top: 1px solid var(--hair);
-    font-size: clamp(17px, 2.4vh, 22px);
+    font-size: clamp(16px, 2.2vh, 20px);
     font-weight: 500;
     letter-spacing: -.02em;
   }
@@ -327,409 +284,501 @@
   .contact-list a { text-decoration: none; }
   .contact-list a:hover { color: var(--ink-dim); }
 
-  /* ── интерфейс поверх ────────────────────────────────────────────────── */
+  /* ── навигация ───────────────────────────────────────────────────────── */
 
-  .hud {
+  /* разделы — слева, вертикальный список */
+  .nav {
     position: fixed;
-    top: 22px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 6vw;
+    bottom: max(6vh, 44px);
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .nav button {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    font: inherit;
+    color: var(--ink-faint);
+    transition: color .25s var(--ease);
+  }
+
+  .nav b {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    transition: width .3s var(--ease-out);
+  }
+
+  .nav button.on { color: var(--ink); }
+  .nav button.on b { width: 34px; }
+  .nav button:hover { color: var(--ink); }
+
+  /* положение внутри раздела — снизу справа */
+  .steps {
+    position: fixed;
+    right: 6vw;
+    bottom: max(6vh, 44px);
+    z-index: 6;
     display: flex;
     align-items: center;
     gap: 4px;
-    z-index: 5;
   }
 
-  .hud i {
+  .steps i {
     display: block;
-    width: 2px;
-    height: 10px;
+    width: 12px;
+    height: 2px;
     background: var(--ink-faint);
     opacity: .45;
-    transform-origin: 50% 50%;
-    transition: opacity .25s var(--ease), transform .35s var(--ease-out), background .25s var(--ease);
+    transition: opacity .25s var(--ease), width .3s var(--ease-out), background .25s var(--ease);
   }
 
-  .hud i.on {
-    opacity: 1;
-    background: var(--ink);
-    transform: scaleY(1.9);
-  }
+  .steps i.on { opacity: 1; width: 26px; background: var(--ink); }
 
-  /* прицел в центре — отсылка к играм, а не декоративный плюс */
   .aim {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 15px;
-    height: 15px;
+    top: 0; left: 0;
+    width: 15px; height: 15px;
     margin: -7.5px 0 0 -7.5px;
-    z-index: 6;
+    z-index: 7;
     pointer-events: none;
-    opacity: .38;
+    opacity: .34;
     transform: translate3d(50vw, 50vh, 0);
     will-change: transform;
     transition: opacity .3s var(--ease);
   }
 
   .aim.hot { opacity: .9; }
-
-  .aim::before, .aim::after {
-    content: "";
-    position: absolute;
-    background: var(--ink);
-  }
-
+  .aim::before, .aim::after { content: ""; position: absolute; background: var(--ink); }
   .aim::before { left: 50%; top: 0; width: 1px; height: 100%; }
   .aim::after { top: 50%; left: 0; height: 1px; width: 100%; }
 
   .hint {
     position: fixed;
     left: 50%;
-    bottom: 24px;
+    bottom: max(6vh, 44px);
     transform: translateX(-50%);
-    z-index: 5;
-    transition: opacity .4s var(--ease);
+    z-index: 6;
+    display: flex;
+    gap: 18px;
+    transition: opacity .45s var(--ease);
   }
 
   .hint.gone { opacity: 0; }
 
-  /* ── появление панелей ───────────────────────────────────────────────── */
+  .panel { opacity: 0; transform: translate3d(24px, 12px, 0) scale(.97); }
 
-  .panel, .chapter { opacity: 0; transform: translate3d(26px, 14px, 0) scale(.965); }
-
-  .panel.in, .chapter.in {
+  .panel.in {
     opacity: 1;
     transform: none;
-    transition: opacity .55s var(--ease-out), transform .62s var(--ease-out);
+    transition: opacity .5s var(--ease-out), transform .58s var(--ease-out);
   }
 
-  /* имя выезжает из-под нижнего края панели, а не проявляется */
-  .panel__name span {
-    display: inline-block;
-    transform: translateY(105%);
-    transition: transform .66s var(--ease-out) .12s;
-  }
-
-  .panel.in .panel__name span { transform: translateY(0); }
-
-  .panel__label { opacity: 0; transition: opacity .4s var(--ease) .3s; }
-  .panel.in .panel__label { opacity: 1; }
-
-  /* ── телефон: обычная вертикальная страница ──────────────────────────── */
+  /* ── телефон: всё в одну колонку, свайпы не нужны ────────────────────── */
 
   @media (max-width: 860px) {
-    .stage { position: static; overflow: visible; }
-    .ghost { display: none; }
-    .rail {
-      position: static;
-      flex-direction: column;
-      align-items: stretch;
-      transform: none !important;
-      padding: 74px 18px 60px;
-      gap: 46px;
-    }
-    .panel, .chapter { width: auto !important; height: auto; }
-    .panel--game, .panel--client { min-height: 62vh; }
-    .panel--intro, .panel--contact { padding: 28px; }
+    body { overflow: auto; }
+    .deck { position: static; transform: none !important; }
+    .cat { height: auto; padding: 54px 0 10px; }
+    .cat__head { position: static; padding: 0 18px 22px; }
+    .rail { flex-direction: column; align-items: stretch; padding: 0 18px; gap: 34px; transform: none !important; }
+    .panel--work { width: auto; height: auto; aspect-ratio: 1; }
+    .panel--text { width: auto; height: auto; }
     .panel__meta { opacity: 1; transform: none; }
-    /* на телефоне описание всегда видно, поэтому имя уходит наверх панели */
-    .panel__name {
-      top: 44px;
-      bottom: auto;
-      left: 14px;
-      font-size: clamp(46px, 13vw, 92px);
-    }
-    .panel__shot::after { height: 62%; }
-    .chapter { padding: 8px 0 0; }
-    .chapter h2 { overflow: hidden; }
-  .chapter h2 span {
-    display: inline-block;
-    transform: translateY(105%);
-    transition: transform .7s var(--ease-out) .1s;
-  }
-  .chapter.in h2 span { transform: translateY(0); }
-
-  .chapter h2 { font-size: clamp(52px, 16vw, 110px); }
-    .aim, .hud, .hint { display: none; }
-    .intro__foot { position: static; margin-top: 26px; }
+    .panel__name { top: 42px; bottom: auto; left: 14px; font-size: clamp(40px, 12vw, 78px); }
+    .panel__shot::after { height: 64%; }
+    .nav, .steps, .aim, .hint { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rail { transition: none; }
-    .panel, .chapter { opacity: 1; transform: none; }
-    .panel__meta { opacity: 1; transform: none; }
+    .panel { opacity: 1; transform: none; }
+    .panel__name span { transform: none; }
+    .panel__shot img, .blob { animation: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="hud" id="hud" aria-hidden="true"></div>
 <div class="aim" aria-hidden="true"></div>
-<div class="hint mono" id="hint">scroll →</div>
 
-<div class="stage">
-  <div class="rail" id="rail">
+<nav class="nav mono" id="nav" aria-label="Sections"></nav>
+<div class="steps" id="steps" aria-hidden="true"></div>
+<div class="hint mono" id="hint"><span>↕ sections</span><span>↔ works</span></div>
 
-    <section class="panel panel--intro">
-      <span class="panel__label mono">John · design engineer</span>
-      <h1 class="intro__title">I design things and <em>build them until they run.</em></h1>
-      <p class="intro__text">Seven games made from scratch — five of them start right here, in this browser, with nothing to install. Plus a client site running in production.</p>
-      <p class="intro__text">I pick the stack, design the thing and carry it to production. AI writes most of the code; I read it, test it and own what ships.</p>
-      <div class="intro__foot mono">
-        <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
-        <span>2026</span>
-      </div>
-    </section>
+<div class="deck" id="deck">
 
-    <div class="chapter">
-      <div>
-        <span class="mono">Section 01</span>
-        <h2><span>Play</span></h2>
-      </div>
+  <!-- ── раздел 1: кто это ─────────────────────────────────────────────── -->
+  <section class="cat" data-name="Intro">
+    <div class="cat__head"><h2>Intro</h2></div>
+    <div class="rail">
+      <article class="panel panel--text">
+        <span class="panel__label mono">John · design engineer</span>
+        <h1 class="intro__title">I design things and <em>build them until they run.</em></h1>
+        <p class="intro__text">Seven games made from scratch — five of them start right here, in this browser, with nothing to install. Plus a client site running in production.</p>
+        <p class="intro__text">I pick the stack, design the thing and carry it to production. AI writes most of the code; I read it, test it and own what ships.</p>
+        <div class="intro__foot mono">
+          <a href="https://github.com/JohnInWork">github.com/JohnInWork</a>
+          <span>2026</span>
+        </div>
+      </article>
+
+      <article class="panel panel--text">
+        <span class="panel__label mono">Where to find me</span>
+        <ul class="contact-list">
+          <li><a href="https://github.com/JohnInWork">GitHub</a> <span class="mono">JohnInWork</span></li>
+          <li><a href="https://johninwork.github.io/voidle/">Voidle</a> <span class="mono">play</span></li>
+          <li><a href="https://magiaprostranstva.com">Magia Prostranstva</a> <span class="mono">live</span></li>
+        </ul>
+        <p class="intro__text" style="margin-top:22px">Seven games, one client site. All of it designed and shipped end to end.</p>
+      </article>
     </div>
+  </section>
 
-    <section class="panel panel--game" style="--accent:#00e5ff">
-      <span class="panel__label mono">Godot · WebAssembly</span>
-      <div class="panel__shot"><img src="shots/voidle.jpg" alt="Voidle — vertical space shooter"></div>
-      <h3 class="panel__name"><span>Voidle</span></h3>
-      <div class="panel__meta">
-        <p>The ship fires on its own; you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
-        <div class="actions">
-          <a class="btn btn--play" href="https://johninwork.github.io/voidle/">Play</a>
-          <a class="btn btn--code" href="https://github.com/JohnInWork/voidle">Code</a>
+  <!-- ── раздел 2: игры ────────────────────────────────────────────────── -->
+  <section class="cat" data-name="Games">
+    <div class="cat__head"><h2>Games</h2><span class="cat__count mono">seven · five playable</span></div>
+    <div class="rail">
+
+      <article class="panel panel--work" style="--accent:#00e5ff">
+        <span class="panel__label mono">Godot · WebAssembly</span>
+        <div class="panel__shot"><img src="shots/voidle.jpg" alt="Voidle — vertical space shooter"></div>
+        <h3 class="panel__name"><span>Voidle</span></h3>
+        <div class="panel__meta">
+          <p>The ship fires on its own; you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://johninwork.github.io/voidle/">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/voidle">Code</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <section class="panel panel--game" style="--accent:#ff7a1a">
-      <span class="panel__label mono">Canvas · Matter.js</span>
-      <div class="panel__shot"><img src="shots/crush.jpg" alt="Crush Factory — the crusher grinding material"></div>
-      <h3 class="panel__name"><span>Crush</span></h3>
-      <div class="panel__meta">
-        <p>A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
-        <div class="actions">
-          <a class="btn btn--play" href="https://johninwork.github.io/crush-factory/">Play</a>
-          <a class="btn btn--code" href="https://github.com/JohnInWork/crush-factory">Code</a>
+      <article class="panel panel--work" style="--accent:#ff7a1a">
+        <span class="panel__label mono">Canvas · Matter.js</span>
+        <div class="panel__shot"><img src="shots/crush.jpg" alt="Crush Factory — the crusher grinding material"></div>
+        <h3 class="panel__name"><span>Crush</span></h3>
+        <div class="panel__meta">
+          <p>A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://johninwork.github.io/crush-factory/">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/crush-factory">Code</a>
+          </div>
         </div>
-      </div>
-      <div class="blob" style="--accent:#ff7a1a; width:34vh; height:34vh; right:-16vh; top:-10vh"></div>
-    </section>
+        <div class="blob" style="--accent:#ff7a1a; width:26vh; height:26vh; right:-12vh; top:-8vh"></div>
+      </article>
 
-    <section class="panel panel--game" style="--accent:#ff3b3b">
-      <span class="panel__label mono">Three.js · WebGL</span>
-      <div class="panel__shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
-      <h3 class="panel__name"><span>Slowmo</span></h3>
-      <div class="panel__meta">
-        <p>Time moves only when you do. Black world, white polygon edges, post-processing written by hand.</p>
-        <div class="actions">
-          <a class="btn btn--play" href="https://johninwork.github.io/slowmo-fps/">Play</a>
-          <a class="btn btn--code" href="https://github.com/JohnInWork/slowmo-fps">Code</a>
+      <article class="panel panel--work" style="--accent:#ff3b3b">
+        <span class="panel__label mono">Three.js · WebGL</span>
+        <div class="panel__shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
+        <h3 class="panel__name"><span>Slowmo</span></h3>
+        <div class="panel__meta">
+          <p>Time moves only when you do. Black world, white polygon edges, post-processing written by hand.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://johninwork.github.io/slowmo-fps/">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/slowmo-fps">Code</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <section class="panel panel--game" style="--accent:#c9dd00">
-      <span class="panel__label mono">Canvas · one HTML file</span>
-      <div class="panel__shot"><img src="shots/hex.jpg" alt="Hex Quest — a hex map under fog"></div>
-      <h3 class="panel__name"><span>Hex</span></h3>
-      <div class="panel__meta">
-        <p>A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
-        <div class="actions">
-          <a class="btn btn--play" href="https://johninwork.github.io/hex-quest/">Play</a>
-          <a class="btn btn--code" href="https://github.com/JohnInWork/hex-quest">Code</a>
+      <article class="panel panel--work" style="--accent:#c9dd00">
+        <span class="panel__label mono">Canvas · one HTML file</span>
+        <div class="panel__shot"><img src="shots/hex.jpg" alt="Hex Quest — a hex map under fog"></div>
+        <h3 class="panel__name"><span>Hex</span></h3>
+        <div class="panel__meta">
+          <p>A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://johninwork.github.io/hex-quest/">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/hex-quest">Code</a>
+          </div>
         </div>
-      </div>
-      <div class="blob" style="--accent:#c9dd00; width:26vh; height:26vh; left:-12vh; bottom:-9vh"></div>
-    </section>
+        <div class="blob" style="--accent:#c9dd00; width:22vh; height:22vh; left:-10vh; bottom:-8vh"></div>
+      </article>
 
-    <section class="panel panel--game" style="--accent:#3bd16f">
-      <span class="panel__label mono">Canvas · vanilla JS</span>
-      <div class="panel__shot"><img src="shots/flow.jpg" alt="Flow Connect — a shaped level with coloured lines"></div>
-      <h3 class="panel__name"><span>Flow</span></h3>
-      <div class="panel__meta">
-        <p>Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
-        <div class="actions">
-          <a class="btn btn--play" href="https://johninwork.github.io/flow-connect/">Play</a>
-          <a class="btn btn--code" href="https://github.com/JohnInWork/flow-connect">Code</a>
+      <article class="panel panel--work" style="--accent:#3bd16f">
+        <span class="panel__label mono">Canvas · vanilla JS</span>
+        <div class="panel__shot"><img src="shots/flow.jpg" alt="Flow Connect — a shaped level with coloured lines"></div>
+        <h3 class="panel__name"><span>Flow</span></h3>
+        <div class="panel__meta">
+          <p>Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://johninwork.github.io/flow-connect/">Play</a>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/flow-connect">Code</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <div class="chapter">
-      <div>
-        <span class="mono">Section 02</span>
-        <h2><span>Build</span></h2>
-      </div>
+      <article class="panel panel--work" style="--accent:#59b0ea">
+        <span class="panel__label mono">Node.js · Socket.IO</span>
+        <div class="panel__shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
+        <h3 class="panel__name"><span>MMO</span></h3>
+        <div class="panel__meta">
+          <p>An online world with a map editor built in: paint the terrain, assemble mobs and NPCs, changes go live without a restart.</p>
+          <div class="actions">
+            <span class="btn--soon mono">Needs a server</span>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
+          </div>
+        </div>
+        <div class="blob" style="--accent:#59b0ea; width:24vh; height:24vh; right:-11vh; bottom:-10vh"></div>
+      </article>
+
+      <article class="panel panel--work" style="--accent:#c9803f">
+        <span class="panel__label mono">Godot 4 · GDScript</span>
+        <div class="panel__shot"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
+        <h3 class="panel__name"><span>Dungeon</span></h3>
+        <div class="panel__meta">
+          <p>A first-person maze drawn by raycasting, wrapped in a pixel-art handheld. Combat, stats, spells, merchants.</p>
+          <div class="actions">
+            <span class="btn--soon mono">Screenshots only</span>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Code</a>
+          </div>
+        </div>
+      </article>
+
     </div>
+  </section>
 
-    <section class="panel panel--game" style="--accent:#59b0ea">
-      <span class="panel__label mono">Node.js · Socket.IO</span>
-      <div class="panel__shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
-      <h3 class="panel__name"><span>MMO</span></h3>
-      <div class="panel__meta">
-        <p>An online world with a map editor built in: paint the terrain, assemble mobs and NPCs, changes go live without a restart.</p>
-        <div class="actions">
-          <span class="btn--soon mono">Needs a server</span>
-          <a class="btn btn--code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
+  <!-- ── раздел 3: сайты ───────────────────────────────────────────────── -->
+  <section class="cat" data-name="Sites">
+    <div class="cat__head"><h2>Sites</h2><span class="cat__count mono">client work · in production</span></div>
+    <div class="rail">
+
+      <article class="panel panel--work" style="--accent:#c98a5e">
+        <span class="panel__label mono">Astro · Vercel</span>
+        <div class="panel__shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
+        <h3 class="panel__name"><span>Magia</span></h3>
+        <div class="panel__meta">
+          <p>Site for a landscape architecture studio. The hero photo splits into vertical blades that flip and swap frames; cases are content collections, leads go straight to Telegram.</p>
+          <div class="actions">
+            <a class="btn btn--play" href="https://magiaprostranstva.com">Open site</a>
+            <span class="btn--soon mono">Source private</span>
+          </div>
         </div>
-      </div>
-      <div class="blob" style="--accent:#59b0ea; width:30vh; height:30vh; right:-14vh; bottom:-12vh"></div>
-    </section>
+      </article>
 
-    <section class="panel panel--game" style="--accent:#c9803f">
-      <span class="panel__label mono">Godot 4 · GDScript</span>
-      <div class="panel__shot"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
-      <h3 class="panel__name"><span>Dungeon</span></h3>
-      <div class="panel__meta">
-        <p>A first-person maze drawn by raycasting, wrapped in a pixel-art handheld. Combat, stats, spells, merchants.</p>
-        <div class="actions">
-          <span class="btn--soon mono">Screenshots only</span>
-          <a class="btn btn--code" href="https://github.com/JohnInWork/godot-dungeon-crawler">Code</a>
+      <article class="panel panel--work" style="--accent:#7fb4d8">
+        <span class="panel__label mono">In-browser tool</span>
+        <div class="panel__shot"><img src="shots/editor.jpg" alt="Map editor of the browser MMORPG"></div>
+        <h3 class="panel__name"><span>Editor</span></h3>
+        <div class="panel__meta">
+          <p>The map editor behind the MMORPG: brush over terrain across four maps, builders for mobs, NPCs, items and quests, changes apply live.</p>
+          <div class="actions">
+            <span class="btn--soon mono">Ships with the server</span>
+            <a class="btn btn--code" href="https://github.com/JohnInWork/browser-mmorpg">Code</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <section class="panel panel--client" style="--accent:#9a5b34">
-      <span class="panel__label mono">Client work · Astro · in production</span>
-      <div class="panel__shot"><img src="shots/architect.jpg" alt="Magia Prostranstva — landscape architecture studio site"></div>
-      <div class="panel__meta">
-        <h4>Magia Prostranstva</h4>
-        <p>Site for a landscape architecture studio, live in production. The hero photo splits into vertical blades that flip and swap frames; case studies are content collections, leads go straight to Telegram.</p>
-        <div class="actions">
-          <a class="btn btn--play" href="https://magiaprostranstva.com">Open site</a>
-          <span class="btn--soon mono">Source stays private</span>
-        </div>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="panel panel--contact">
-      <span class="panel__label mono">End of the line</span>
-      <h2 style="margin:0;font-size:clamp(28px,4vh,42px);font-weight:600;letter-spacing:-.03em">Want one of these built?</h2>
-      <ul class="contact-list">
-        <li><a href="https://github.com/JohnInWork">GitHub</a> <span class="mono">JohnInWork</span></li>
-        <li><a href="https://johninwork.github.io/voidle/">Voidle</a> <span class="mono">play</span></li>
-        <li><a href="https://magiaprostranstva.com">Magia Prostranstva</a> <span class="mono">live</span></li>
-      </ul>
-      <p class="intro__text" style="margin-top:26px">Seven games, one client site. All of it designed and shipped end to end.</p>
-    </section>
-
-  </div>
 </div>
-
-<div class="ghost" id="ghost"></div>
 
 <script>
 (() => {
-  const rail  = document.getElementById('rail');
-  const ghost = document.getElementById('ghost');
-  const hud   = document.getElementById('hud');
+  const deck  = document.getElementById('deck');
+  const nav   = document.getElementById('nav');
+  const steps = document.getElementById('steps');
   const hint  = document.getElementById('hint');
-  const cards = [...rail.children];
+  const cats  = [...deck.querySelectorAll('.cat')];
+  const calm  = matchMedia('(prefers-reduced-motion: reduce)');
+  const wide  = matchMedia('(min-width: 861px)');
 
-  const calm = matchMedia('(prefers-reduced-motion: reduce)');
-  const wide = matchMedia('(min-width: 861px)');
+  // у каждого раздела своя лента со своим положением
+  const state = cats.map(cat => ({
+    cat,
+    rail: cat.querySelector('.rail'),
+    panels: [...cat.querySelectorAll('.panel')],
+    x: 0, target: 0, max: 0,
+  }));
 
-  // индикатор — по штриху на панель
-  cards.forEach(() => hud.appendChild(document.createElement('i')));
-  const ticks = [...hud.children];
+  let index = 0, deckY = 0, deckTarget = 0, raf = 0;
 
-  let railW = 0, maxShift = 0, target = 0, current = 0, raf = 0;
+  // ── список разделов слева ──────────────────────────────────────────────
+  cats.forEach((cat, i) => {
+    const b = document.createElement('button');
+    b.innerHTML = '<b></b><span>' + cat.dataset.name + '</span>';
+    b.addEventListener('click', () => go(i));
+    nav.appendChild(b);
+  });
+  const navBtns = [...nav.children];
 
   function measure() {
-    if (!wide.matches) { ghost.style.height = ''; rail.style.transform = ''; return; }
-    railW = rail.scrollWidth;
-    maxShift = Math.max(0, railW - innerWidth);
-    // длина прокрутки = сколько ленте нужно проехать, плюс экран на вход
-    ghost.style.height = (maxShift + innerHeight) + 'px';
-    onScroll(true);
-  }
-
-  function onScroll(instant) {
     if (!wide.matches) return;
-    target = Math.min(scrollY, maxShift);
-    if (instant || calm.matches) { current = target; paint(); return; }
-    if (!raf) raf = requestAnimationFrame(tick);
+    state.forEach(s => {
+      s.max = Math.max(0, s.rail.scrollWidth - innerWidth);
+      s.x = s.target = Math.min(s.x, s.max);
+    });
+    deckTarget = deckY = -index * innerHeight;
+    paint(true);
   }
 
-  // инерция: лента догоняет скролл, а не прыгает за ним
+  function go(i) {
+    index = Math.max(0, Math.min(i, cats.length - 1));
+    deckTarget = -index * innerHeight;
+    navBtns.forEach((b, n) => b.classList.toggle('on', n === index));
+    buildSteps();
+    kick();
+  }
+
+  function buildSteps() {
+    steps.innerHTML = '';
+    state[index].panels.forEach(() => steps.appendChild(document.createElement('i')));
+  }
+
+  function slide(dx) {
+    const s = state[index];
+    s.target = Math.max(0, Math.min(s.target + dx, s.max));
+    kick();
+  }
+
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+
   function tick() {
-    const delta = target - current;
-    current += delta * 0.11;
-    if (Math.abs(delta) < 0.3) { current = target; raf = 0; } else { raf = requestAnimationFrame(tick); }
-    paint();
-  }
+    const k = calm.matches ? 1 : 0.12;
+    let moving = false;
 
-  function paint() {
-    rail.style.transform = `translate3d(${-current}px, -50%, 0)`;
+    const dy = deckTarget - deckY;
+    if (Math.abs(dy) > 0.3) { deckY += dy * k; moving = true; } else deckY = deckTarget;
 
-    // расслойка: кадр отстаёт от панели, имя обгоняет, пятно уходит вглубь
-    const shift = current;
-    cards.forEach(card => {
-      const img  = card.querySelector('.panel__shot img');
-      const name = card.querySelector('.panel__name');
-      const blob = card.querySelector('.blob');
-      if (img)  img.style.transform  = `translate3d(${shift * 0.045}px,0,0) scale(1.06)`;
-      if (name) name.style.transform = `translate3d(${shift * -0.03}px,0,0)`;
-      if (blob) blob.style.transform = `translate3d(${shift * 0.09}px,0,0)`;
+    state.forEach(s => {
+      const dx = s.target - s.x;
+      if (Math.abs(dx) > 0.3) { s.x += dx * k; moving = true; } else s.x = s.target;
     });
 
-    const p = maxShift ? current / maxShift : 0;
-    const active = Math.round(p * (ticks.length - 1));
-    ticks.forEach((t, i) => t.classList.toggle('on', i === active));
-    hint.classList.toggle('gone', current > 40);
-    if (!calm.matches && !aimRaf) aimRaf = requestAnimationFrame(aimTick);
+    paint();
+    raf = moving ? requestAnimationFrame(tick) : 0;
   }
 
-  // появление панелей — короткий каскад, без «всё летит снизу»
+  function paint(instant) {
+    deck.style.transform = `translate3d(0, ${deckY}px, 0)`;
+
+    state.forEach(s => {
+      s.rail.style.transform = `translate3d(${-s.x}px, 0, 0)`;
+      // расслойка: кадр отстаёт от панели, имя обгоняет
+      s.panels.forEach(p => {
+        const img  = p.querySelector('.panel__shot img');
+        const name = p.querySelector('.panel__name');
+        if (img)  img.style.transform  = `translate3d(${s.x * 0.04}px, 0, 0)`;
+        if (name) name.style.transform = `translate3d(${s.x * -0.028}px, 0, 0)`;
+      });
+    });
+
+    const s = state[index];
+    const p = s.max ? s.x / s.max : 0;
+    const active = Math.round(p * (steps.children.length - 1));
+    [...steps.children].forEach((t, i) => t.classList.toggle('on', i === active));
+    hint.classList.toggle('gone', s.x > 40 || index > 0);
+    if (!instant) aimKick();
+  }
+
+  // ── ввод: вертикаль листает разделы, горизонталь ведёт работы ─────────
+  let wheelLock = 0;
+
+  addEventListener('wheel', e => {
+    if (!wide.matches) return;
+    e.preventDefault();
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { slide(e.deltaX * 1.1); return; }
+    const now = performance.now();
+    if (now < wheelLock || Math.abs(e.deltaY) < 8) return;
+    wheelLock = now + 520;                       // один разворот колеса = один раздел
+    go(index + Math.sign(e.deltaY));
+  }, { passive: false });
+
+  addEventListener('keydown', e => {
+    if (!wide.matches) return;
+    const step = innerWidth * 0.35;
+    if (e.key === 'ArrowRight') { slide(step); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { slide(-step); e.preventDefault(); }
+    else if (e.key === 'ArrowDown' || e.key === 'PageDown') { go(index + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowUp' || e.key === 'PageUp') { go(index - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { go(0); e.preventDefault(); }
+  });
+
+  // перетаскивание мышью — для тех, у кого только колесо
+  let drag = null;
+  deck.addEventListener('pointerdown', e => {
+    if (!wide.matches || e.target.closest('a, button')) return;
+    drag = { x: e.clientX, y: e.clientY, moved: false };
+  });
+  addEventListener('pointermove', e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (Math.abs(dx) > 2) { slide(-dx); drag.x = e.clientX; drag.moved = true; }
+  });
+  addEventListener('pointerup', () => { drag = null; });
+
+  // свайп по касанию: ось решает, что двигать
+  let touch = null;
+  addEventListener('touchstart', e => {
+    if (!wide.matches) return;
+    touch = { x: e.touches[0].clientX, y: e.touches[0].clientY, axis: null };
+  }, { passive: true });
+
+  addEventListener('touchmove', e => {
+    if (!touch || !wide.matches) return;
+    const dx = e.touches[0].clientX - touch.x;
+    const dy = e.touches[0].clientY - touch.y;
+    if (!touch.axis && Math.hypot(dx, dy) > 12) touch.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    if (touch.axis === 'x') { slide(-dx); touch.x = e.touches[0].clientX; }
+    else if (touch.axis === 'y' && Math.abs(dy) > 60) { go(index + (dy < 0 ? 1 : -1)); touch = null; }
+  }, { passive: true });
+
+  addEventListener('touchend', () => { touch = null; }, { passive: true });
+
+  // ── появление панелей ────────────────────────────────────────────────
   const io = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
       if (!e.isIntersecting) return;
-      setTimeout(() => e.target.classList.add('in'), i * 60);
+      setTimeout(() => e.target.classList.add('in'), i * 55);
       io.unobserve(e.target);
     });
-  }, { root: null, rootMargin: '0px -8% 0px -8%', threshold: 0.05 });
+  }, { rootMargin: '0px -6% 0px -6%', threshold: 0.05 });
 
-  cards.forEach(c => io.observe(c));
+  state.forEach(s => s.panels.forEach(p => io.observe(p)));
 
-  // клавиатура: панель, на которую ушёл фокус, должна оказаться в кадре
-  rail.addEventListener('focusin', e => {
-    if (!wide.matches) return;
-    const card = e.target.closest('.panel');
-    if (!card) return;
-    const want = Math.max(0, Math.min(card.offsetLeft - innerWidth * 0.18, maxShift));
-    scrollTo({ top: want, behavior: calm.matches ? 'auto' : 'smooth' });
-  });
-
-  // прицел догоняет курсор и тянется по ходу ленты — один общий жест, а не два разных
+  // ── прицел ───────────────────────────────────────────────────────────
   const aim = document.querySelector('.aim');
-  let ax = innerWidth / 2, ay = innerHeight / 2, mx = ax, my = ay, speed = 0, prev = 0, aimRaf = 0;
+  let ax = innerWidth / 2, ay = innerHeight / 2, mx = ax, my = ay, prevX = 0, speed = 0, aimRaf = 0;
 
   function aimTick() {
     ax += (mx - ax) * 0.18;
     ay += (my - ay) * 0.18;
-    speed += (Math.abs(current - prev) - speed) * 0.2;
-    prev = current;
-    const stretch = 1 + Math.min(speed * 0.035, 1.6);
-    aim.style.transform = `translate3d(${ax}px, ${ay}px, 0) scaleX(${stretch})`;
+    speed += (Math.abs(state[index].x - prevX) - speed) * 0.2;
+    prevX = state[index].x;
+    aim.style.transform = `translate3d(${ax}px, ${ay}px, 0) scaleX(${1 + Math.min(speed * 0.03, 1.5)})`;
     aimRaf = (Math.abs(mx - ax) > 0.4 || speed > 0.2) ? requestAnimationFrame(aimTick) : 0;
   }
 
-  addEventListener('pointermove', e => {
-    mx = e.clientX; my = e.clientY;
-    if (!aimRaf && !calm.matches) aimRaf = requestAnimationFrame(aimTick);
-  }, { passive: true });
+  function aimKick() { if (!calm.matches && !aimRaf) aimRaf = requestAnimationFrame(aimTick); }
 
-  rail.addEventListener('pointerover', e => aim.classList.toggle('hot', !!e.target.closest('.panel--game')));
-  rail.addEventListener('pointerout', () => aim.classList.remove('hot'));
+  addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; aimKick(); }, { passive: true });
+  deck.addEventListener('pointerover', e => aim.classList.toggle('hot', !!e.target.closest('.panel--work')));
 
-  addEventListener('scroll', () => onScroll(false), { passive: true });
+  // фокус клавиатурой подтягивает свою панель и свой раздел
+  deck.addEventListener('focusin', e => {
+    if (!wide.matches) return;
+    const cat = e.target.closest('.cat');
+    const panel = e.target.closest('.panel');
+    if (cat) { const i = cats.indexOf(cat); if (i !== index) go(i); }
+    if (panel) {
+      const s = state[index];
+      s.target = Math.max(0, Math.min(panel.offsetLeft - innerWidth * 0.2, s.max));
+      kick();
+    }
+  });
+
   addEventListener('resize', measure);
-  addEventListener('load', measure);
+  go(0);
   measure();
-
-  // на узком экране лента становится обычной колонкой — сбрасываем сдвиг
-  wide.addEventListener('change', () => { rail.style.transform = ''; measure(); });
 })();
 </script>
 
