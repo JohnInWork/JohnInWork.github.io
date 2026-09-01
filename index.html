@@ -89,6 +89,21 @@
     padding-bottom: 40px;
   }
 
+  /* сетка игр — плотная, превью квадратные */
+  .grid.games {
+    grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+    gap: 18px;
+  }
+
+  .grid.games .shot { aspect-ratio: 1; }
+  .grid.games .card { padding: 10px 10px 16px; }
+  .grid.games .body { padding: 14px 8px 0; }
+  .grid.games h3 { font-size: 17px; margin-bottom: 6px; }
+  .grid.games .desc { font-size: 13.5px; line-height: 1.45; margin-bottom: 12px; }
+  .grid.games .stack { font-size: 12px; margin-bottom: 14px; }
+  .grid.games .btn { height: 36px; padding: 0 14px; font-size: 14px; border-radius: 9px; }
+  .grid.games .no-demo { height: 36px; font-size: 12.5px; }
+
   /* клиентская работа — одна широкая карточка: кадр слева, текст справа */
   .grid.feature { grid-template-columns: 1fr; }
 
@@ -263,13 +278,13 @@
 
   <h2 class="section">Games</h2>
 
-  <main class="grid">
+  <main class="grid games">
 
     <article class="card">
-      <div class="shot"><img src="shots/flow.png" alt="Flow Connect — a shaped level with coloured lines"></div>
+      <div class="shot"><img src="shots/flow.jpg" alt="Flow Connect — a shaped level with coloured lines"></div>
       <div class="body">
         <h3>Flow Connect</h3>
-        <p class="desc">Connect matching dots so the pipes never cross and fill the whole board. 271 levels: shaped boards, bridges, and a timed mode.</p>
+        <p class="desc">Connect matching dots without crossing pipes. 271 levels: shaped boards, bridges, a timed mode.</p>
         <p class="stack">Canvas · vanilla JS · levels generated from Hamiltonian paths</p>
         <div class="actions">
           <a class="btn btn-play" href="https://johninwork.github.io/flow-connect/">Play</a>
@@ -279,10 +294,10 @@
     </article>
 
     <article class="card">
-      <div class="shot"><img src="shots/crush.png" alt="Crush Factory — the crusher grinding material"></div>
+      <div class="shot"><img src="shots/crush.jpg" alt="Crush Factory — the crusher grinding material"></div>
       <div class="body">
         <h3>Crush Factory</h3>
-        <p class="desc">A clicker where the crusher really crushes: chunks fall between spinning drums on physics, not on an animation loop. Materials, upgrades, skins, 10 languages.</p>
+        <p class="desc">A clicker where the crusher really crushes — chunks fall through spinning drums on physics. Skins, upgrades, 10 languages.</p>
         <p class="stack">Canvas · Matter.js · 10 languages</p>
         <div class="actions">
           <a class="btn btn-play" href="https://johninwork.github.io/crush-factory/">Play</a>
@@ -295,7 +310,7 @@
       <div class="shot"><img src="shots/superhot.jpg" alt="SlowmoFPS — wireframe world and a pistol"></div>
       <div class="body">
         <h3>SlowmoFPS</h3>
-        <p class="desc">A shooter where time moves only when you do — stand still and the world nearly freezes. Black world, white polygon edges, cinematic post-processing on hand-written shaders.</p>
+        <p class="desc">Time moves only when you do. Black world, white polygon edges, hand-written post-processing.</p>
         <p class="stack">Three.js · WebGL · custom shader passes</p>
         <div class="actions">
           <a class="btn btn-play" href="https://johninwork.github.io/slowmo-fps/">Play</a>
@@ -305,10 +320,10 @@
     </article>
 
     <article class="card">
-      <div class="shot"><img src="shots/hex.png" alt="Hex Quest — a hex map under fog"></div>
+      <div class="shot"><img src="shots/hex.jpg" alt="Hex Quest — a hex map under fog"></div>
       <div class="body">
         <h3>Hex Quest</h3>
-        <p class="desc">The map is hidden under fog; every click reveals a tile and plays out whatever sits under it. Health, food and swords drain, so you keep pushing into new ground — with an inventory, gear, sea monsters and 15 playable characters.</p>
+        <p class="desc">A map under fog: each click reveals a tile and plays out what sits under it. Inventory, gear, 15 characters.</p>
         <p class="stack">Canvas · a single HTML file · landscape generation</p>
         <div class="actions">
           <a class="btn btn-play" href="https://johninwork.github.io/hex-quest/">Play</a>
@@ -321,7 +336,7 @@
       <div class="shot"><img src="shots/voidle.jpg" alt="Voidle — vertical space shooter"></div>
       <div class="body">
         <h3>Voidle</h3>
-        <p class="desc">A vertical space shooter: the ship fires on its own, you steer it through enemy fire, collect coins and crystals and spend them between runs on upgrades and new hulls. Five enemy behaviours, four boss types.</p>
+        <p class="desc">The ship fires on its own, you steer it clear of bullets. Five enemy behaviours, four bosses, upgrades between runs.</p>
         <p class="stack">Godot 4 · GDScript · WebAssembly build</p>
         <div class="actions">
           <a class="btn btn-play" href="https://johninwork.github.io/voidle/">Play</a>
@@ -334,7 +349,7 @@
       <div class="shot"><img src="shots/mmorpg.jpg" alt="Browser MMORPG — isometric world"></div>
       <div class="body">
         <h3>Browser MMORPG</h3>
-        <p class="desc">An online world: players see each other, fight mobs, collect loot. The whole world is painted in a built-in admin panel — brush over the map, with builders for mobs, NPCs and items.</p>
+        <p class="desc">An online world: players see each other, fight mobs, collect loot. The whole map is painted in a built-in admin panel.</p>
         <p class="stack">Node.js · Socket.IO · Canvas · live map editor</p>
         <div class="actions">
           <span class="no-demo">Needs a server</span>
@@ -347,7 +362,7 @@
       <div class="shot fit"><img src="shots/godot.jpg" alt="Dungeon Crawler — pseudo-3D maze"></div>
       <div class="body">
         <h3>Dungeon Crawler</h3>
-        <p class="desc">A first-person maze for phones wrapped in a pixel-art handheld: the corridor is raycast over a tilemap. Combat with skeletons and slimes, character stats, spells, merchants with quests.</p>
+        <p class="desc">A first-person maze drawn by raycasting. Combat, stats, spells, merchants with quests.</p>
         <p class="stack">Godot 4 · GDScript · portrait mode</p>
         <div class="actions">
           <span class="no-demo">Screenshots only</span>
