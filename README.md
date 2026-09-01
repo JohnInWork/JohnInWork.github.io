@@ -1,10 +1,18 @@
 **English** · [Русский](README.ru.md)
 
-# Games showcase
+# Work showcase
 
 Live page: [johninwork.github.io](https://johninwork.github.io)
 
-Six games with a short description and a screenshot each. Four of them run right in the browser via GitHub Pages; the other two ship as source only.
+Selected work: a client site running in production, and six games with a short description and a screenshot each. Four of the games run right in the browser via GitHub Pages; the other two ship as source only.
+
+## Client work
+
+| Project | Live | Code |
+|---|---|---|
+| Magia Prostranstva — landscape architecture studio | [magiaprostranstva.com](https://magiaprostranstva.com) | private (client project) |
+
+## Games
 
 | Game | Demo | Code |
 |---|---|---|
