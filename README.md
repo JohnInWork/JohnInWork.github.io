@@ -4,7 +4,7 @@
 
 Live page: [johninwork.github.io](https://johninwork.github.io)
 
-Selected work: a client site running in production, and seven games with a short description and a screenshot each. Five of the games run right in the browser via GitHub Pages; the other two ship as source only.
+Selected work: a client site running in production, and eight games with a short description and a screenshot each. Six of the games run right in the browser via GitHub Pages; the other two ship as source only.
 
 ## Client work
 
@@ -16,6 +16,7 @@ Selected work: a client site running in production, and seven games with a short
 
 | Game | Demo | Code |
 |---|---|---|
+| Little Islands | [play](https://johninwork.github.io/little-islands/) | [little-islands](https://github.com/JohnInWork/little-islands) |
 | Flow Connect | [play](https://johninwork.github.io/flow-connect/) | [flow-connect](https://github.com/JohnInWork/flow-connect) |
 | Crush Factory | [play](https://johninwork.github.io/crush-factory/) | [crush-factory](https://github.com/JohnInWork/crush-factory) |
 | SlowmoFPS Runner | [play](https://johninwork.github.io/slowmo-fps/) | [slowmo-fps](https://github.com/JohnInWork/slowmo-fps) |
