@@ -4,7 +4,7 @@
 
 Страница: [johninwork.github.io](https://johninwork.github.io)
 
-Избранные работы: сайт заказчика в проде и семь игр с кратким описанием и кадром из каждой. Пять игр запускаются прямо в браузере через GitHub Pages, у двух пока только исходники.
+Избранные работы: сайт заказчика в проде и восемь игр с кратким описанием и кадром из каждой. Шесть игр запускаются прямо в браузере через GitHub Pages, у двух пока только исходники.
 
 ## Работа с заказчиком
 
@@ -16,6 +16,7 @@
 
 | Игра | Демо | Код |
 |---|---|---|
+| MOCHI | [играть](https://johninwork.github.io/mochi/) | [mochi](https://github.com/JohnInWork/mochi) |
 | Flow Connect | [играть](https://johninwork.github.io/flow-connect/) | [flow-connect](https://github.com/JohnInWork/flow-connect) |
 | Crush Factory | [играть](https://johninwork.github.io/crush-factory/) | [crush-factory](https://github.com/JohnInWork/crush-factory) |
 | SlowmoFPS Runner | [играть](https://johninwork.github.io/slowmo-fps/) | [slowmo-fps](https://github.com/JohnInWork/slowmo-fps) |
